@@ -100,7 +100,7 @@ public class TableroVirtual {
             for(int j=0; j<16; j++){ 
                 
                 //primero vemos cual es la primera casilla de esa fila que no sea nula 
-                //entonces veremos que haya minimo tres que cumplan con las condiciones
+                //entonces veremos que haya minimo tres que cumplan con las condiciones minima 
                 if(!"".equals(teclasJugo[i][j].getText()) &&teclasJugo[i][j].getText()!= null){                    
                 
                     //tipo es cero si no hay tipo , 1 si es conjunto y 2 si es escalera
@@ -110,14 +110,17 @@ public class TableroVirtual {
                     int comodin=0;
                     int Posicioncomodin=0; //si es 1 el comodin se encuentra en la primera posicion
                                            //si es 2 se encuentra en la segunda posicion
-                                           
-                    Teclas aux = teclasJugo[i][j];
                     
+                      
+                    Teclas aux = teclasJugo[i][j];
+                    //creo un vector auxiliar para el control de las posiciones 
+                    //de la fila en la que estoy analizando
                     Teclas[] vector_correct = new Teclas[16];
                     for(int ola=0; ola<16; ola++) vector_correct[ola] = new Teclas();
                     
+                    //preguntamos si el primero es un comodin
+                    //ya que desde antes sabemos que es una ficha valida y no un espacio vacio
                     if("0".equals(aux.getText() )){
-                        //preguntamos si es comodin
                         correcto++; 
                         vector_correct[0].numero="0";
                         vector_correct[0].color=""; 
@@ -126,26 +129,29 @@ public class TableroVirtual {
                         //preguntamos si la proxima tecla es nula
                         if(!"".equals(teclasJugo[i][j+1].getText()) &&teclasJugo[i][j+1].getText()!= null){
                             //preguntamos si el siguiente tambien es un comodin
+                            //ya que sabemos que es una ficha valida
                             if("0".equals(teclasJugo[i][j+1].getText())){
                                 correcto++; 
                                 vector_correct[1].numero="0";
                                 vector_correct[1].color="";
                                 comodin=2;
                             }else{
-                                //entonces el sigueinte es un numero 
+                                //entonces sino es un comodin el sigueinte es un numero 
                                 correcto++;
                                 vector_correct[1].numero=teclasJugo[i][j+1].getText();
-                                vector_correct[1].color=colorString(aux.getBackground());                                              
+                                vector_correct[1].color=colorString(teclasJugo[i][j+1].getBackground());                                              
                             }
+                        //en caso de que la segunda posicion sea nula
                         }else return false;
                     }else{
-                        //si no es un comodin el primero entonces aux es un numero 
+                    //si no es un comodin el primero entonces aux es un numero 
                         correcto++;
-                        vector_correct[0].numero=teclasJugo[i][j+1].getText();
-                        vector_correct[0].color=colorString(aux.getBackground());                       
+                        vector_correct[0].numero=teclasJugo[i][j].getText();
+                        vector_correct[0].color=colorString(teclasJugo[i][j].getBackground());                       
                         
                         //preguntamos si la proxima tecla es nula
-                        if(!"".equals(teclasJugo[i][j+1].getText()) &&teclasJugo[i][j+1].getText()!= null){
+                        //ya que sabemos que hay una tecla valida
+                        if(!"".equals(teclasJugo[i][j+1].getText()) && teclasJugo[i][j+1].getText()!= null){
                             //preguntamos si el siguiente tambien es un comodin
                             if("0".equals(teclasJugo[i][j+1].getText())){
                                 correcto++; 
@@ -154,14 +160,19 @@ public class TableroVirtual {
                                 comodin=1;
                                 Posicioncomodin=2; 
                             }else{
-                                //preguntamos si la siguiente es conjunto 
+                            //ya sabemos que el segundo no es un comodin
+                            //ademas que el primero tampoco es un comodin
+                            
+                                //preguntamos si la siguiente es conjunto
+                                //del primero 
                                 if(aux.getText().equals(teclasJugo[i][j+1].getText())){
                                     //preguntamos que esta siguiente no sea del mismo color a aux
                                     if(aux.getBackground() != teclasJugo[i][j+1].getBackground()){
                                         correcto++;
                                         vector_correct[1].numero=teclasJugo[i][j+1].getText();
-                                        vector_correct[1].color=colorString(aux.getBackground());
+                                        vector_correct[1].color=colorString(teclasJugo[i][j+1].getBackground());
                                         tipo=1;
+                                    // si es del mismo color entonces retorna falso
                                     }else return false; 
                                 }else{
                                     //preguntamos si el siguiente es escalera
@@ -174,51 +185,152 @@ public class TableroVirtual {
                                             String numeroSiguiente = teclasJugo[i][j+1].getText();
                                             int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
                                             //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
-                                            if(numEntero+1 == numEnteroSiguiente){
+                                            if(numEntero + 1 == numEnteroSiguiente){
                                                 correcto++;
                                                 vector_correct[1].numero=teclasJugo[i][j+1].getText();
-                                                vector_correct[1].color=colorString(aux.getBackground());                                                
+                                                vector_correct[1].color=colorString(teclasJugo[i][j+1].getBackground());                                                
                                                 tipo=2;
+                                            //no es un numero consecutico por ente retorna falso
                                             }else return false;
-                                        }catch(Exception e){return false;}                                   
+                                        }catch(Exception e){return false;}            
+                                        
+                                    //no son del mismo color entonces retornaria falso
                                     }else return false;
                                 }                                
                             }                       
+                        //en caso de que el segundo no sea nada 
+                        //entonces retorna falso
                         }else return false;            
                     }
                     
-                    int sindecicion=0;
+                    int sindecicion=0; //1 es que no se puede decidir
+                    
                     //ahora ya que hay dos fichas que cumplen el patron se verifica la tercera
                     if((correcto == 2) && (!"".equals(teclasJugo[i][j+2].getText()) && teclasJugo[i][j+2].getText()!= null)){
-                        //preguntamos si los dos anteriores eran comodines 
-                        if(comodin == 2){
-                            //entonces es una tecla que se puede poner
-                            correcto++;
-                            vector_correct[2].numero=teclasJugo[i][j+1].getText();
-                            vector_correct[2].color=colorString(aux.getBackground());
-                            sindecicion=1;
-                        }else{
-                            //hay un comodin en la primera posicion
-                            if(Posicioncomodin==1){
+                    
+                        switch (comodin) {
+                            case 2:
+                                //entonces es una tecla que se puede poner 
+                                //ya que hay dos comodines antes 
+                                correcto++;
+                                vector_correct[2].numero=teclasJugo[i][j+2].getText();
+                                vector_correct[2].color=colorString(teclasJugo[i][j+2].getBackground());
+                                sindecicion=1;
+                                break;
+                            case 1:
+                                //ya sabemos que no es el caso de tener dos comodines 
+                                //entonces este es el caso en el que hay un comodin 
+                                
                                 //preguntamos si la tercera tambien es un comodin
-                                if("0".equals(teclasJugo[i][j+1].getText())){
+                                if("0".equals(teclasJugo[i][j+2].getText())){
                                     correcto++; 
                                     vector_correct[2].numero="0";
                                     vector_correct[2].color="";
                                     comodin=2;
                                     sindecicion=1;
                                 }else{
-                                    //como es una tecla entonces debe cumplir conjunto o serie
+                                   //ysa sabemos que no son 2 comodines, que solo hay uno pero tenemos que saber cual es la 
+                                   //posicion del comodin anterior para ver como comparar las dos fichas que quedan
+                                    switch(Posicioncomodin){
+                                        case 1:    
+                                            //preguntamos si el tercero es un conjunto con respecto 
+                                            //al segundo 
+                                            if(teclasJugo[i][j+1].getText().equals(teclasJugo[i][j+2].getText())){
+                                                //preguntamos que esta siguiente no sea del mismo color al otro
+                                                if(teclasJugo[i][j+1].getBackground() != teclasJugo[i][j+2].getBackground()){
+                                                    correcto++;
+                                                    vector_correct[2].numero=teclasJugo[i][j+2].getText();
+                                                    vector_correct[2].color=colorString(teclasJugo[i][j+2].getBackground());
+                                                    tipo=1;
+                                                // si es del mismo color entonces retorna falso
+                                                }else return false; 
+                                            }else{
+                                                //preguntamos si el siguiente es escalera
+                                                //hay que primero preguntar si es del mismo color
+                                                if(teclasJugo[i][j+1].getBackground() == teclasJugo[i][j+2].getBackground()){
+                                                    //hay que ver si el siguiente es un numero consecutivo
+                                                    try{
+                                                        String numero = teclasJugo[i][j+1].getText();
+                                                        int numEntero = Integer.parseInt(numero);
+                                                        String numeroSiguiente = teclasJugo[i][j+2].getText();
+                                                        int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
+                                                        //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
+                                                        if(numEntero + 1 == numEnteroSiguiente){
+                                                            correcto++;
+                                                            vector_correct[2].numero=teclasJugo[i][j+2].getText();
+                                                            vector_correct[2].color=colorString(teclasJugo[i][j+2].getBackground());                                                
+                                                            tipo=2;
+                                                        //no es un numero consecutico por ente retorna falso
+                                                        }else return false;
+                                                    }catch(Exception e){return false;}            
+                                                //no son del mismo color entonces retornaria falso
+                                                }else return false;
+                                            }
+                                            break;
+                                        case 2:
+                                            //preguntamos si el tercero es un conjunto con respecto 
+                                            //al primero 
+                                            if(teclasJugo[i][j].getText().equals(teclasJugo[i][j+2].getText())){
+                                                //preguntamos que este siguiente no sea del mismo color al otro
+                                                if(teclasJugo[i][j].getBackground() != teclasJugo[i][j+2].getBackground()){
+                                                    correcto++;
+                                                    vector_correct[2].numero=teclasJugo[i][j+2].getText();
+                                                    vector_correct[2].color=colorString(teclasJugo[i][j+2].getBackground());
+                                                    tipo=1;
+                                                // si es del mismo color entonces retorna falso
+                                                }else return false; 
+                                            }else{
+                                                //preguntamos si el siguiente es escalera
+                                                //hay que primero preguntar si es del mismo color
+                                                if(teclasJugo[i][j].getBackground() == teclasJugo[i][j+2].getBackground()){
+                                                    //hay que ver si el siguiente es un numero consecutivo
+                                                    try{
+                                                        String numero = teclasJugo[i][j].getText();
+                                                        int numEntero = Integer.parseInt(numero);
+                                                        String numeroSiguiente = teclasJugo[i][j+2].getText();
+                                                        int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
+                                                        //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
+                                                        if(numEntero + 2 == numEnteroSiguiente){
+                                                            correcto++;
+                                                            vector_correct[2].numero=teclasJugo[i][j+2].getText();
+                                                            vector_correct[2].color=colorString(teclasJugo[i][j+2].getBackground());                                                
+                                                            tipo=2;
+                                                        //no es un numero consecutico por ente retorna falso
+                                                        }else return false;
+                                                    }catch(Exception e){return false;}            
+                                                //no son del mismo color entonces retornaria falso
+                                                }else return false;
+                                            }
+                                            break;
+                                        default: return false;
+                                    }                                   
+                                }
+                                break;
+                            case 0:
+                                //ya se completaron el caso de que sea dos o un solo comodin 
+                                //preguntamos si la tercera es un comodin   
+                                
+                                //preguntamos si la tercera tambien es un comodin
+                                if("0".equals(teclasJugo[i][j+2].getText())){
+                                    correcto++; 
+                                    vector_correct[2].numero="0";
+                                    vector_correct[2].color="";
+                                    comodin=2;
+                                    sindecicion=1;
+                                }else{
+                                    //preguntamos si el tercero es un conjunto con respecto 
+                                    //al segundo 
                                     if(teclasJugo[i][j+1].getText().equals(teclasJugo[i][j+2].getText())){
-                                        //preguntamos que esta siguiente no sea del mismo color a aux
+                                        //preguntamos que este siguiente no sea del mismo color al otro
                                         if(teclasJugo[i][j+1].getBackground() != teclasJugo[i][j+2].getBackground()){
                                             correcto++;
                                             vector_correct[2].numero=teclasJugo[i][j+2].getText();
-                                            vector_correct[2].color=colorString(aux.getBackground());
+                                            vector_correct[2].color=colorString(teclasJugo[i][j+2].getBackground());
                                             tipo=1;
+                                        // si es del mismo color entonces retorna falso
                                         }else return false; 
                                     }else{
-                                        //preguntamos si esta tercera es escalera
+                                        //preguntamos si el siguiente es escalera
                                         //hay que primero preguntar si es del mismo color
                                         if(teclasJugo[i][j+1].getBackground() == teclasJugo[i][j+2].getBackground()){
                                             //hay que ver si el siguiente es un numero consecutivo
@@ -227,254 +339,155 @@ public class TableroVirtual {
                                                 int numEntero = Integer.parseInt(numero);
                                                 String numeroSiguiente = teclasJugo[i][j+2].getText();
                                                 int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
-                                                //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
-                                                if(numEntero+1 == numEnteroSiguiente){
+                                               //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
+                                                if(numEntero + 1 == numEnteroSiguiente){
                                                     correcto++;
                                                     vector_correct[2].numero=teclasJugo[i][j+2].getText();
-                                                    vector_correct[2].color=colorString(aux.getBackground());                                                
+                                                    vector_correct[2].color=colorString(teclasJugo[i][j+2].getBackground());                                                
                                                     tipo=2;
+                                                //no es un numero consecutico por ente retorna falso
                                                 }else return false;
-                                            }catch(Exception e){return false;}                                   
+                                            }catch(Exception e){return false;}            
+                                        //no son del mismo color entonces retornaria falso
                                         }else return false;
                                     }
-                                }
-                            }else{
-                                //hay un comodin en la segunda posicion
-                                if(Posicioncomodin==2){
-                                    //preguntamos si la tercera tambien es un comodin
-                                    if("0".equals(teclasJugo[i][j+1].getText())){
-                                        correcto++; 
-                                        vector_correct[2].numero="0";
-                                        vector_correct[2].color="";
-                                        comodin=2;
-                                        sindecicion=1;
-                                    }else{
-                                        //como es una tecla entonces debe cumplir conjunto o serie
-                                        if(aux.getText().equals(teclasJugo[i][j+2].getText())){
-                                            //preguntamos que esta siguiente no sea del mismo color a aux
-                                            if(aux.getBackground() != teclasJugo[i][j+2].getBackground()){
-                                                correcto++;
-                                                vector_correct[2].numero=teclasJugo[i][j+2].getText();
-                                                vector_correct[2].color=colorString(aux.getBackground());
-                                                tipo=1;
-                                            }else return false; 
-                                        }else{
-                                            //preguntamos si esta tercera es escalera
-                                            //hay que primero preguntar si es del mismo color
-                                            if(aux.getBackground() == teclasJugo[i][j+2].getBackground()){
-                                                //hay que ver si el siguiente es un numero consecutivo
-                                                try{
-                                                    String numero = aux.getText();
-                                                    int numEntero = Integer.parseInt(numero);
-                                                    String numeroSiguiente = teclasJugo[i][j+2].getText();
-                                                    int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
-                                                    //se compara qe ademas de ser el mismo color debe ser dos consectivo en numero
-                                                    //porque hay un comodin
-                                                    if(numEntero+ 2 == numEnteroSiguiente){
-                                                        correcto++;
-                                                        vector_correct[2].numero=teclasJugo[i][j+2].getText();
-                                                        vector_correct[2].color=colorString(aux.getBackground());                                                
-                                                        tipo=2;
-                                                    }else return false;
-                                                }catch(Exception e){return false;}                                   
-                                            }else return false;
-                                        }
-                                    }                               
-                                }else{
-                                    //ya se completaron el caso de que sea dos o un solo comodin 
-                                    //preguntamos si la tercera es un comodin
-                                    if("0".equals(teclasJugo[i][j+1].getText())){
-                                        correcto++; 
-                                        vector_correct[2].numero="0";
-                                        vector_correct[2].color="";
-                                        comodin=1;
-                                    }else{
-                                        //como es una tecla entonces debe cumplir conjunto o escalera
-                                        if(aux.getText().equals(teclasJugo[i][j+2].getText())){
-                                            //preguntamos que esta siguiente no sea del mismo color a aux ni al seguiente
-                                            if((aux.getBackground() != teclasJugo[i][j+2].getBackground())&& (teclasJugo[i][j+1].getBackground() != teclasJugo[i][j+2].getBackground())){
-                                                correcto++;
-                                                vector_correct[2].numero=teclasJugo[i][j+2].getText();
-                                                vector_correct[2].color=colorString(aux.getBackground());
-                                                tipo=1;
-                                            }else return false; 
-                                        }else{
-                                            //preguntamos si esta tercera es escalera
-                                            //hay que primero preguntar si es del mismo color
-                                            if(aux.getBackground() == teclasJugo[i][j+2].getBackground()){
-                                                //hay que ver si el siguiente es un numero consecutivo
-                                                try{
-                                                    String numero = teclasJugo[i][j+1].getText();
-                                                    int numEntero = Integer.parseInt(numero);
-                                                    String numeroSiguiente = teclasJugo[i][j+2].getText();
-                                                    int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
-                                                    //se compara qe ademas de ser el mismo color debe ser dos consectivo en numero
-                                                    //porque hay un comodin
-                                                    if(numEntero+1 == numEnteroSiguiente){
-                                                        correcto++;
-                                                        vector_correct[2].numero=teclasJugo[i][j+2].getText();
-                                                        vector_correct[2].color=colorString(aux.getBackground());                                                
-                                                        tipo=2;
-                                                    }else return false;
-                                                }catch(Exception e){return false;}                                   
-                                            }else return false;
-                                        }
-                                    }                               
-                                 
-                                } 
-                            }                       
-                        }
+                                }                             
+                                break;
+                            default: return false;
+                        }                     
+                    //en caso de que el tercero sea nulo o algo haya pasado antes mal
+                    //con los dos primero
                     }else return false;    
                     
                     //ya se analizaron las siguientes dos teclas por eso se pone a j+2
                     j=j+2;
-
+                
+                    int exit=0;
+                    int posicionesCoreect=3;
+                    
                     //ahora comprobamos que ya que hay 3 si hay una cuarta o mas teclas 
                     //que cumplan con las normas de serie o de escalera
-                    if(!"".equals(teclasJugo[i][j+1].getText()) &&teclasJugo[i][j+1].getText()!= null){  
-                      
-                        //primero vemos lo que no se podian decidir
-                        if(sindecicion==1){
-                            int hei=0;
-                            for(hei=0; hei<3 &&!"0".equals(vector_correct[hei].numero); hei++);
+                    for(int a=j+1; a<16 && exit == 0; a++){
+                        //este ciclo se cumple hasta que haya un vacio o no haya una tecla
+                        aux= teclasJugo[i][a];
+                        
+                        //esto es para el caso de que haya una consecutiva
+                        //entonces hay que analizar dicha ficha
+                        if(!"".equals(aux.getText()) && aux.getText()!= null){  
                             
-                            //como es una tecla entonces debe cumplir conjunto o escalera
-                            if(vector_correct[hei].getText().equals(teclasJugo[i][j+1].getText())){
-                                //preguntamos que esta siguiente no sea del mismo color 
-                                if((vector_correct[hei].getBackground() != teclasJugo[i][j+1].getBackground())){
-                                    correcto++;
-                                    vector_correct[3].numero=teclasJugo[i][j+1].getText();
-                                    vector_correct[3].color=colorString(aux.getBackground());
-                                    tipo=1;
-                                }else return false; 
-                            }else{
-                                //preguntamos si esta tercera es escalera
-                                //hay que primero preguntar si es del mismo color
-                                if(vector_correct[hei].getBackground() == teclasJugo[i][j+1].getBackground()){
-                                    //hay que ver si el siguiente es un numero consecutivo
-                                    try{
-                                        String numero = vector_correct[hei].getText();
-                                        int numEntero = Integer.parseInt(numero);
-                                        String numeroSiguiente = teclasJugo[i][j+1].getText();
-                                            int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
-                                            //se compara qe ademas de ser el mismo color debe ser dos consectivo en numero
-                                            if(numEntero+(3-hei) == numEnteroSiguiente){
-                                                correcto++;
-                                                vector_correct[2].numero=teclasJugo[i][j+1].getText();
-                                                vector_correct[2].color=colorString(aux.getBackground());                                                
-                                                tipo=2;
-                                            }else return false;
-                                    }catch(Exception e){return false;}                                   
-                                }else return false;
-                            }
-                        }else{
-                           //bueno en este punto ya se sabe que es tipo 1 o tipo 2  
-                            int hei=0;
-                            
-                            if("0".equals(teclasJugo[i][j+1].getText())){
-                              correcto++;
-                              vector_correct[3].numero="0";
-                              vector_correct[3].color="";                              
-                            }else{
-                                if(tipo==1){
-                                    for(hei=0; hei<3 ; hei++){
-                                        if(!"0".equals(vector_correct[hei].getText())){
-                                            if(vector_correct[hei].getText().equals(teclasJugo[i][j+1].getText())){
-                                            //preguntamos que esta siguiente no sea del mismo color 
-                                                if((vector_correct[hei].getBackground() != teclasJugo[i][j+1].getBackground())){
-                                                }else return false;
-                                            }else return false;
-                                        }
-                                    }
-                                    correcto++;
-                                    vector_correct[3].numero=teclasJugo[i][j+1].getText();
-                                    vector_correct[3].color=colorString(aux.getBackground());
-                                    tipo=1;
-                                }else{
-                                    if(tipo==2){
-                                        hei=0;
-                                        for(hei=0; hei<3 &&!"0".equals(vector_correct[hei].numero); hei++);
-                                         
-                                        //preguntamos si esta tercera es escalera
-                                        //hay que primero preguntar si es del mismo color
-                                        if(vector_correct[hei].getBackground() == teclasJugo[i][j+1].getBackground()){
-                                            //hay que ver si el siguiente es un numero consecutivo
-                                            try{
-                                                String numero = vector_correct[hei].getText();
-                                                int numEntero = Integer.parseInt(numero);
-                                                String numeroSiguiente = teclasJugo[i][j+1].getText();
-                                                int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
-                                                //se compara qe ademas de ser el mismo color debe ser dos consectivo en numero
-                                                if(numEntero+(3-hei) == numEnteroSiguiente){
+                             //se hace este for para agarrar la ficha validas entre las 3 o mas agregadas ya analizadas
+                            for(int PoscionFichaValida=0; (PoscionFichaValida< posicionesCoreect); PoscionFichaValida++){
+                                Teclas auxRebizado=vector_correct[PoscionFichaValida];
+               
+                                if(!"0".equals(auxRebizado.numero)){
+
+                                    switch(sindecicion){
+                                        case 1:
+                                            //aux debe tener el mismo texto para que sea conjunto
+                                            if(aux.getText().equals(auxRebizado.getText())){
+                                                //preguntamos que esta siguiente no sea del 
+                                                //mismo color al otro
+                                                if(aux.getBackground() != auxRebizado.getBackground()){
                                                     correcto++;
-                                                    vector_correct[3].numero=teclasJugo[i][j+1].getText();
-                                                    vector_correct[3].color=colorString(aux.getBackground());                                                
-                                                    tipo=2;
-                                                }else return false;
-                                            }catch(Exception e){return false;}                                   
-                                        }else return false;                                       
-                                    }else return false;
-                                }   
-                            }                               
-                        }
-                    j++;
-                    //ahora ya que todo esta dicho son todos de algun tipo 
-                    //entonces empezamos con el ciclo
-                    int exit=0;
-                    int a=j+1;
-                    int h=3;
-                    for(a=j+1; a<16 && exit == 0; a++,h++){
-                        int hei=0;                        
-                        if("0".equals(teclasJugo[i][a].getText())){
-                            correcto++;
-                            vector_correct[h].numero="0";
-                            vector_correct[h].color="";
-                        }else{
-                            if(tipo==1){
-                                for(hei=0; hei<h-1 ; hei++){
-                                    if(!"0".equals(vector_correct[hei].getText())){
-                                        if(vector_correct[hei].getText().equals(teclasJugo[i][a].getText())){
-                                            //preguntamos que esta siguiente no sea del mismo color 
-                                            if((vector_correct[hei].getBackground() != teclasJugo[i][a].getBackground())){
-                                            }else return false;
-                                        }else return false;
+                                                    vector_correct[posicionesCoreect].numero=auxRebizado.getText();
+                                                    vector_correct[posicionesCoreect].color=colorString(auxRebizado.getBackground());
+                                                    posicionesCoreect++;
+                                                    tipo=1;
+                                                    sindecicion=0;
+                                                // si es del mismo color entonces retorna falso
+                                                }else return false; 
+                                            }else {
+                                                //preguntamos si el siguiente es escalera
+                                                //hay que primero preguntar si es del mismo color
+                                                if(aux.getBackground() == auxRebizado.getBackground()){
+                                                    //hay que ver si es un numero consecutivo
+                                                    try{
+                                                        String numero = aux.getText();
+                                                        int numEntero = Integer.parseInt(numero);
+                                                        String numeroSiguiente = auxRebizado.getText();
+                                                        int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
+                                                        //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
+                                                        if(numEntero + (posicionesCoreect-PoscionFichaValida) == numEnteroSiguiente){
+                                                            correcto++;
+                                                            vector_correct[posicionesCoreect].numero=auxRebizado.getText();
+                                                            vector_correct[posicionesCoreect].color=colorString(auxRebizado.getBackground());                                                
+                                                            tipo=2;
+                                                            sindecicion=0;
+                                                            posicionesCoreect++;
+                                                        //no es un numero consecutico por ente retorna falso
+                                                        }else return false;
+                                                    }catch(Exception e){return false;}            
+                                                //no son del mismo color entonces retornaria falso
+                                                }else return false;   
+                                            }
+                                            break;
+                                        case 0:
+                                            if("0".equals(aux.getText())){
+                                                correcto++; 
+                                                vector_correct[posicionesCoreect].numero="0";
+                                                vector_correct[posicionesCoreect].color="";
+                                                posicionesCoreect++;
+                                                break;
+                                            }
+                                            //si estamos aqui es porque ya hay un patron de que si es conjunto
+                                            //o es una escalera, por eso el siguiente switch
+                                            switch(tipo){
+                                                // si tipo es de tipo 1 es un conjunto
+                                                case 1:
+                                                    //aux debe tener el mismo texto
+                                                    if(aux.getText().equals(auxRebizado.getText())){
+                                                        //preguntamos que esta siguiente no sea del 
+                                                        //mismo color al otro
+                                                        if(aux.getBackground() != auxRebizado.getBackground()){
+                                                            correcto++;
+                                                            vector_correct[posicionesCoreect].numero=auxRebizado.getText();
+                                                            vector_correct[posicionesCoreect].color=colorString(auxRebizado.getBackground());
+                                                            posicionesCoreect++;
+                                                            tipo=1;
+                                                        // si es del mismo color entonces retorna falso
+                                                        }else return false; 
+                                                    }else return false;
+                                                    
+                                                    break;
+                                                case 2:
+                                                    //preguntamos si el siguiente es escalera
+                                                    //hay que primero preguntar si es del mismo color
+                                                    if(aux.getBackground() == auxRebizado.getBackground()){
+                                                        //hay que ver si es un numero consecutivo
+                                                        try{
+                                                            String numero = aux.getText();
+                                                            int numEntero = Integer.parseInt(numero);
+                                                            String numeroSiguiente = auxRebizado.getText();
+                                                            int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
+                                                            //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
+                                                            if(numEntero + (posicionesCoreect-PoscionFichaValida) == numEnteroSiguiente){
+                                                                correcto++;
+                                                                vector_correct[posicionesCoreect].numero=auxRebizado.getText();
+                                                                vector_correct[posicionesCoreect].color=colorString(auxRebizado.getBackground());                                                
+                                                                tipo=2;
+                                                                posicionesCoreect++;
+                                                            //no es un numero consecutico por ente retorna falso
+                                                            }else return false;
+                                                        }catch(Exception e){return false;}            
+                                                    //no son del mismo color entonces retornaria falso
+                                                    }else return false;
+                                                    
+                                                    break;
+                                                default: return false;
+                                            }
+                                            
+                                            break;
+                                        default: return false;
                                     }
                                 }
-                                correcto++;
-                                vector_correct[h].numero=teclasJugo[i][a].getText();
-                                vector_correct[h].color=colorString(aux.getBackground());
-                                tipo=1;
-                            }else{
-                                if(tipo==2){
-                                    hei=0;
-                                    for(hei=0; hei<h-1 &&!"0".equals(vector_correct[hei].numero); hei++);
-                                         
-                                        //preguntamos si esta tercera es escalera
-                                        //hay que primero preguntar si es del mismo color
-                                        if(vector_correct[hei].getBackground() == teclasJugo[i][a].getBackground()){
-                                            //hay que ver si el siguiente es un numero consecutivo
-                                            try{
-                                                String numero = vector_correct[hei].getText();
-                                                int numEntero = Integer.parseInt(numero);
-                                                String numeroSiguiente = teclasJugo[i][a].getText();
-                                                int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
-                                                //se compara qe ademas de ser el mismo color debe ser dos consectivo en numero
-                                                if(numEntero+(h-hei) == numEnteroSiguiente){
-                                                    correcto++;
-                                                    vector_correct[h].numero=teclasJugo[i][a].getText();
-                                                    vector_correct[h].color=colorString(aux.getBackground());                                                
-                                                    tipo=2;
-                                                }else return false;
-                                            }catch(Exception e){return false;}                                   
-                                        }else return false;                                       
-                                    }else return false;
-                                }
-                        }
-                    }
-                    j=a;         
+                            }  
+                        }else{
+                          j=a;
+                          exit=1;
+                        }                        
                     }
                 }
-            }                
+            }
         }
      return true;
     }
