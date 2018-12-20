@@ -367,10 +367,8 @@ public class TableroVirtual {
                     
                     //ya se analizaron las siguientes dos teclas por eso se pone a j+2
                     j=j+2;
-                    
                     int exit=0;
                     int posicionesCoreect=3;
-                    
                     //ahora comprobamos que ya que hay 3 si hay una cuarta o mas teclas 
                     //que cumplan con las normas de conjunto o de escalera
                     for(int a=j+1; a<16 && exit == 0; a++){
@@ -397,15 +395,21 @@ public class TableroVirtual {
                                 //estaban analizadas
                                 for(int PoscionFichaValida=0; (PoscionFichaValida< posicionesCoreect); PoscionFichaValida++){
                                    Teclas auxRebizado=vector_correct[PoscionFichaValida];
-
+                                   auxRebizado.setText(auxRebizado.numero);
+                                   auxRebizado.setBackground(colorFormatoColor(auxRebizado.color));
+                                   
+                                   System.out.println("estoy aqui ? ");
                                    //vamos a recorrer el vector correcto es decir el vector con la linea
                                    //que se esta analizando y comparar con el aux que es la nueva ficha incorparada
                                    //obviamente si la ficha que estaba en el vector es un comodin el aux no se eberia comparar con
                                    //dicho comodin ya que el comodin ya fue analizado 
+                                  
                                    if(!"0".equals(auxRebizado.numero)){
 
                                        switch(sindecicion){
                                            case 1:
+                                               
+                                               System.out.println("estoy aqui ? 00000 ");
                                                //esto quiere decir que hay dos comodines antes y que este cuarta ficha debe hacer 
                                                //un conjunto o una escalera
                                                
@@ -413,6 +417,9 @@ public class TableroVirtual {
                                                if(aux.getText().equals(auxRebizado.getText())){
                                                    //preguntamos que esta siguiente no sea del 
                                                    //mismo color al otro
+                                                   
+                                                   System.out.println("soy conjunto valida:"+PoscionFichaValida );
+                                                   
                                                    if(aux.getBackground() != auxRebizado.getBackground()){
                                                        correcto++;
                                                        vector_correct[posicionesCoreect].numero=aux.getText();
@@ -436,11 +443,13 @@ public class TableroVirtual {
                                                    if(aux.getBackground() == auxRebizado.getBackground()){
                                                        //hay que ver si es un numero consecutivo
                                                        try{
-                                                           String numero = aux.getText();
+                                                           String numero = auxRebizado.getText();
                                                            int numEntero = Integer.parseInt(numero);
-                                                           String numeroSiguiente = auxRebizado.getText();
+                                                           String numeroSiguiente = aux.getText();
                                                            int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
                                                            //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
+                                                           
+                                                           System.out.println("soy escalera valida: "+PoscionFichaValida );
                                                            if(numEntero + (posicionesCoreect-PoscionFichaValida) == numEnteroSiguiente){
                                                                correcto++;
                                                                vector_correct[posicionesCoreect].numero=aux.getText();
@@ -467,13 +476,15 @@ public class TableroVirtual {
                                             //en las 3 primeras posiciones
                                            case 0:
                                                
+                                   System.out.println("estoy aqui 14? ");
                                                //si estamos aqui es porque ya hay un patron de que si es conjunto
                                                //o es una escalera, por eso el siguiente switch
                                                switch(tipo){
                                                    // si tipo es de tipo 1 es un conjunto
                                                    case 1:
-                                                       //aux debe tener el mismo texto
+                                                        //aux debe tener el mismo texto
                                                        if(aux.getText().equals(auxRebizado.getText())){
+                                                           System.out.println("");
                                                            //preguntamos que esta siguiente no sea del 
                                                            //mismo color al otro
                                                            if(aux.getBackground() != auxRebizado.getBackground()){
@@ -499,18 +510,19 @@ public class TableroVirtual {
 
                                                        break;
                                                    case 2:
-                                                       //preguntamos si el siguiente es escalera
+                                
+                                            //preguntamos si el siguiente es escalera
                                                        //hay que primero preguntar si es del mismo color
                                                        if(aux.getBackground() == auxRebizado.getBackground()){
                                                            //hay que ver si es un numero consecutivo
                                                            try{
-                                                               String numero = aux.getText();
+                                                               String numero = auxRebizado.getText();
                                                                int numEntero = Integer.parseInt(numero);
-                                                               String numeroSiguiente = auxRebizado.getText();
+                                                               String numeroSiguiente = aux.getText();
                                                                int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
                                                                //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
                                                                if(numEntero + (posicionesCoreect-PoscionFichaValida) == numEnteroSiguiente){
-                                                                                                             
+                                                                 
                                                                     //como estamos analizando el aux (nueva posicion) con 
                                                                     //el arreglo correcto (ficha por ficha), la unica forma de agregar
                                                                     //a la nueva ficha es que la misma ya se haya comparado con todo el vector
@@ -560,9 +572,16 @@ public class TableroVirtual {
         if(colorsito == Color.blue) return "azul";
         if(colorsito == Color.red) return "rojo";
         if(colorsito == Color.black) return "negro";        
-        return "00";
+        return "";
     }
-        
+
+    public Color colorFormatoColor(String colorsito){
+        if(colorsito == "amarillo") return Color.yellow;
+        if(colorsito == "azul") return Color.blue;
+        if(colorsito == "rojo") return Color.red;
+        if(colorsito == "negro" ) return Color.black;        
+        return Color.white;
+    }
     //ejecutar cuando empiece el turno para que pueda regresar a la posicion original en caso de que no cumpla 
     //las reglas
     public void TeclasAlEmpiezarElTurno(AplicacionUsuario aplicacion_actual){
