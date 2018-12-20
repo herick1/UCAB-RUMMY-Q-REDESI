@@ -323,10 +323,16 @@ public class TableroVirtual {
                                     if(teclasJugo[i][j+1].getText().equals(teclasJugo[i][j+2].getText())){
                                         //preguntamos que este siguiente no sea del mismo color al otro
                                         if(teclasJugo[i][j+1].getBackground() != teclasJugo[i][j+2].getBackground()){
-                                            correcto++;
-                                            vector_correct[2].numero=teclasJugo[i][j+2].getText();
-                                            vector_correct[2].color=colorString(teclasJugo[i][j+2].getBackground());
-                                            tipo=1;
+                                            
+                                            //sin embargo en este caso tambien hay que preguntar que este tercero sea de diferente color al primero
+                                            //preguntamos que el primero no sea del mismo color que el tercero
+                                            if(teclasJugo[i][j].getBackground() != teclasJugo[i][j+2].getBackground()){                                                                   
+                                                correcto++;
+                                                vector_correct[2].numero=teclasJugo[i][j+2].getText();
+                                                vector_correct[2].color=colorString(teclasJugo[i][j+2].getBackground());
+                                                tipo=1;
+                                            // si es del mismo color entonces retorna falso
+                                            }else return false;
                                         // si es del mismo color entonces retorna falso
                                         }else return false; 
                                     }else{
@@ -361,12 +367,12 @@ public class TableroVirtual {
                     
                     //ya se analizaron las siguientes dos teclas por eso se pone a j+2
                     j=j+2;
-                
+                    
                     int exit=0;
                     int posicionesCoreect=3;
                     
                     //ahora comprobamos que ya que hay 3 si hay una cuarta o mas teclas 
-                    //que cumplan con las normas de serie o de escalera
+                    //que cumplan con las normas de conjunto o de escalera
                     for(int a=j+1; a<16 && exit == 0; a++){
                         //este ciclo se cumple hasta que haya un vacio o no haya una tecla
                         aux= teclasJugo[i][a];
@@ -375,112 +381,168 @@ public class TableroVirtual {
                         //entonces hay que analizar dicha ficha
                         if(!"".equals(aux.getText()) && aux.getText()!= null){  
                             
-                             //se hace este for para agarrar la ficha validas entre las 3 o mas agregadas ya analizadas
-                            for(int PoscionFichaValida=0; (PoscionFichaValida< posicionesCoreect); PoscionFichaValida++){
-                                Teclas auxRebizado=vector_correct[PoscionFichaValida];
-               
-                                if(!"0".equals(auxRebizado.numero)){
+                            //este es el caso en que la nueva ficha que se esta poniendo
+                            //sea un comodin y por ende se incluye directamente
+                            if("0".equals(aux.getText())){  
+                                    correcto++; 
+                                    vector_correct[posicionesCoreect].numero="0";
+                                    vector_correct[posicionesCoreect].color="";
+                                    posicionesCoreect++;
+                            }else{
+                                //si estamos en este else es decir que 
+                                //la siguiente tecla no es vacia,no es un comodin
+                                //pero si es una ficha con un numero 
+                                
+                                //se hace este for para agarrar la ficha validas entre las 3 o mas agregadas qe ya 
+                                //estaban analizadas
+                                for(int PoscionFichaValida=0; (PoscionFichaValida< posicionesCoreect); PoscionFichaValida++){
+                                   Teclas auxRebizado=vector_correct[PoscionFichaValida];
 
-                                    switch(sindecicion){
-                                        case 1:
-                                            //aux debe tener el mismo texto para que sea conjunto
-                                            if(aux.getText().equals(auxRebizado.getText())){
-                                                //preguntamos que esta siguiente no sea del 
-                                                //mismo color al otro
-                                                if(aux.getBackground() != auxRebizado.getBackground()){
-                                                    correcto++;
-                                                    vector_correct[posicionesCoreect].numero=auxRebizado.getText();
-                                                    vector_correct[posicionesCoreect].color=colorString(auxRebizado.getBackground());
-                                                    posicionesCoreect++;
-                                                    tipo=1;
-                                                    sindecicion=0;
-                                                // si es del mismo color entonces retorna falso
-                                                }else return false; 
-                                            }else {
-                                                //preguntamos si el siguiente es escalera
-                                                //hay que primero preguntar si es del mismo color
-                                                if(aux.getBackground() == auxRebizado.getBackground()){
-                                                    //hay que ver si es un numero consecutivo
-                                                    try{
-                                                        String numero = aux.getText();
-                                                        int numEntero = Integer.parseInt(numero);
-                                                        String numeroSiguiente = auxRebizado.getText();
-                                                        int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
-                                                        //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
-                                                        if(numEntero + (posicionesCoreect-PoscionFichaValida) == numEnteroSiguiente){
-                                                            correcto++;
-                                                            vector_correct[posicionesCoreect].numero=auxRebizado.getText();
-                                                            vector_correct[posicionesCoreect].color=colorString(auxRebizado.getBackground());                                                
-                                                            tipo=2;
-                                                            sindecicion=0;
-                                                            posicionesCoreect++;
-                                                        //no es un numero consecutico por ente retorna falso
-                                                        }else return false;
-                                                    }catch(Exception e){return false;}            
-                                                //no son del mismo color entonces retornaria falso
-                                                }else return false;   
-                                            }
+                                   //vamos a recorrer el vector correcto es decir el vector con la linea
+                                   //que se esta analizando y comparar con el aux que es la nueva ficha incorparada
+                                   //obviamente si la ficha que estaba en el vector es un comodin el aux no se eberia comparar con
+                                   //dicho comodin ya que el comodin ya fue analizado 
+                                   if(!"0".equals(auxRebizado.numero)){
+
+                                       switch(sindecicion){
+                                           case 1:
+                                               //esto quiere decir que hay dos comodines antes y que este cuarta ficha debe hacer 
+                                               //un conjunto o una escalera
+                                               
+                                               //aux debe tener el mismo texto para que sea conjunto
+                                               if(aux.getText().equals(auxRebizado.getText())){
+                                                   //preguntamos que esta siguiente no sea del 
+                                                   //mismo color al otro
+                                                   if(aux.getBackground() != auxRebizado.getBackground()){
+                                                       correcto++;
+                                                       vector_correct[posicionesCoreect].numero=aux.getText();
+                                                       vector_correct[posicionesCoreect].color=colorString(aux.getBackground());
+                                                       posicionesCoreect++;
+                                                       tipo=1;
+                                                       sindecicion=0;
+                                                       
+                                                       //esto sigueinte es como parada del ciclo
+                                                       //del vector correcto ya que si se entro aqui y se analizo esta ficha
+                                                       //ajuro esta ficha tiene que ser la cuarta y por ente se tiene que salir 
+                                                       //del ciclo
+                                                       PoscionFichaValida= posicionesCoreect+1;
+                                                       
+                                                       
+                                                   // si es del mismo color entonces retorna falso
+                                                   }else return false; 
+                                               }else {
+                                                   //preguntamos si el siguiente es escalera
+                                                   //hay que primero preguntar si es del mismo color
+                                                   if(aux.getBackground() == auxRebizado.getBackground()){
+                                                       //hay que ver si es un numero consecutivo
+                                                       try{
+                                                           String numero = aux.getText();
+                                                           int numEntero = Integer.parseInt(numero);
+                                                           String numeroSiguiente = auxRebizado.getText();
+                                                           int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
+                                                           //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
+                                                           if(numEntero + (posicionesCoreect-PoscionFichaValida) == numEnteroSiguiente){
+                                                               correcto++;
+                                                               vector_correct[posicionesCoreect].numero=aux.getText();
+                                                               vector_correct[posicionesCoreect].color=colorString(aux.getBackground());                                                
+                                                               tipo=2;
+                                                               sindecicion=0;
+                                                               posicionesCoreect++;
+                                                               
+                                                                //esto sigueinte es como parada del ciclo
+                                                                //del vector correcto ya que si se entro aqui y se analizo esta ficha
+                                                                //ajuro esta ficha tiene que ser la cuarta y por ente se tiene que salir 
+                                                                //del ciclo
+                                                                PoscionFichaValida= posicionesCoreect+1;
+
+                                                           //no es un numero consecutico por ente retorna falso
+                                                           }else return false;
+                                                       }catch(Exception e){return false;}            
+                                                   //no son del mismo color entonces retornaria falso
+                                                   }else return false;   
+                                               }
                                             break;
-                                        case 0:
-                                            if("0".equals(aux.getText())){
-                                                correcto++; 
-                                                vector_correct[posicionesCoreect].numero="0";
-                                                vector_correct[posicionesCoreect].color="";
-                                                posicionesCoreect++;
-                                                break;
-                                            }
-                                            //si estamos aqui es porque ya hay un patron de que si es conjunto
-                                            //o es una escalera, por eso el siguiente switch
-                                            switch(tipo){
-                                                // si tipo es de tipo 1 es un conjunto
-                                                case 1:
-                                                    //aux debe tener el mismo texto
-                                                    if(aux.getText().equals(auxRebizado.getText())){
-                                                        //preguntamos que esta siguiente no sea del 
-                                                        //mismo color al otro
-                                                        if(aux.getBackground() != auxRebizado.getBackground()){
-                                                            correcto++;
-                                                            vector_correct[posicionesCoreect].numero=auxRebizado.getText();
-                                                            vector_correct[posicionesCoreect].color=colorString(auxRebizado.getBackground());
-                                                            posicionesCoreect++;
-                                                            tipo=1;
-                                                        // si es del mismo color entonces retorna falso
-                                                        }else return false; 
-                                                    }else return false;
-                                                    
-                                                    break;
-                                                case 2:
-                                                    //preguntamos si el siguiente es escalera
-                                                    //hay que primero preguntar si es del mismo color
-                                                    if(aux.getBackground() == auxRebizado.getBackground()){
-                                                        //hay que ver si es un numero consecutivo
-                                                        try{
-                                                            String numero = aux.getText();
-                                                            int numEntero = Integer.parseInt(numero);
-                                                            String numeroSiguiente = auxRebizado.getText();
-                                                            int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
-                                                            //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
-                                                            if(numEntero + (posicionesCoreect-PoscionFichaValida) == numEnteroSiguiente){
-                                                                correcto++;
-                                                                vector_correct[posicionesCoreect].numero=auxRebizado.getText();
-                                                                vector_correct[posicionesCoreect].color=colorString(auxRebizado.getBackground());                                                
-                                                                tipo=2;
-                                                                posicionesCoreect++;
-                                                            //no es un numero consecutico por ente retorna falso
-                                                            }else return false;
-                                                        }catch(Exception e){return false;}            
-                                                    //no son del mismo color entonces retornaria falso
-                                                    }else return false;
-                                                    
-                                                    break;
-                                                default: return false;
-                                            }
                                             
+                                            //esta es la opcion comun de que no hay dos comodines 
+                                            //en las 3 primeras posiciones
+                                           case 0:
+                                               
+                                               //si estamos aqui es porque ya hay un patron de que si es conjunto
+                                               //o es una escalera, por eso el siguiente switch
+                                               switch(tipo){
+                                                   // si tipo es de tipo 1 es un conjunto
+                                                   case 1:
+                                                       //aux debe tener el mismo texto
+                                                       if(aux.getText().equals(auxRebizado.getText())){
+                                                           //preguntamos que esta siguiente no sea del 
+                                                           //mismo color al otro
+                                                           if(aux.getBackground() != auxRebizado.getBackground()){
+                                                               
+                                                               //como estamos analizando el aux (nueva posicion) con 
+                                                               //el arreglo correcto (ficha por ficha), la unica forma de agregar
+                                                               //a la nueva ficha es que la misma ya se haya comparado con todo el vector
+                                                               //por eso el siguiente if (que estes en la ultima pocicion del arreglo)
+                                                               if(PoscionFichaValida+1 == posicionesCoreect){
+                                                                    correcto++;
+                                                                    vector_correct[posicionesCoreect].numero=aux.getText();
+                                                                    vector_correct[posicionesCoreect].color=colorString(aux.getBackground());
+                                                                    posicionesCoreect++;
+                                                                    //esto sigueinte es como parada del ciclo
+                                                                    //del vector correcto ya que si se entro aqui y se analizo esta ficha
+                                                                    //ajuro esta ficha tiene que ser la ultima y por ente se tiene que salir 
+                                                                    //del ciclo
+                                                                    PoscionFichaValida= posicionesCoreect+1;
+                                                               }                                                               
+                                                           // si es del mismo color entonces retorna falso
+                                                           }else return false; 
+                                                       }else return false;
+
+                                                       break;
+                                                   case 2:
+                                                       //preguntamos si el siguiente es escalera
+                                                       //hay que primero preguntar si es del mismo color
+                                                       if(aux.getBackground() == auxRebizado.getBackground()){
+                                                           //hay que ver si es un numero consecutivo
+                                                           try{
+                                                               String numero = aux.getText();
+                                                               int numEntero = Integer.parseInt(numero);
+                                                               String numeroSiguiente = auxRebizado.getText();
+                                                               int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
+                                                               //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
+                                                               if(numEntero + (posicionesCoreect-PoscionFichaValida) == numEnteroSiguiente){
+                                                                                                             
+                                                                    //como estamos analizando el aux (nueva posicion) con 
+                                                                    //el arreglo correcto (ficha por ficha), la unica forma de agregar
+                                                                    //a la nueva ficha es que la misma ya se haya comparado con todo el vector
+                                                                    //por eso el siguiente if (que estes en la ultima pocicion del arreglo)
+                                                                    if(PoscionFichaValida+1 == posicionesCoreect){
+                                                                        correcto++;
+                                                                        vector_correct[posicionesCoreect].numero=aux.getText();
+                                                                        vector_correct[posicionesCoreect].color=colorString(aux.getBackground());                                                
+                                                                        posicionesCoreect++;
+                                                                        //esto sigueinte es como parada del ciclo
+                                                                        //del vector correcto ya que si se entro aqui y se analizo esta ficha
+                                                                        //ajuro esta ficha tiene que ser la ultima y por ente se tiene que salir 
+                                                                        //del ciclo
+                                                                        PoscionFichaValida= posicionesCoreect+1;
+                                                                    }
+                                                                //no es un numero consecutico por ente retorna falso
+                                                                }else return false;
+                                                            }catch(Exception e){return false;}            
+                                                       //no son del mismo color entonces retornaria falso
+                                                       }else return false;
+
+                                                       break;
+                                                   default: return false;
+                                               }
+
                                             break;
-                                        default: return false;
-                                    }
-                                }
-                            }  
+                                           default: return false;
+                                       }
+                                   }
+
+                               }
+                            }                         
                         }else{
                           j=a;
                           exit=1;
