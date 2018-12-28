@@ -5,7 +5,10 @@
  */
 package rummy.q.Modelo;
 
+import comunicacion.Comunicacion;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Image;
 import static java.lang.System.exit;
 import static javafx.application.Platform.exit;
@@ -24,6 +27,8 @@ public class TableroVirtual {
     private int k;
     private Teclas[][] Tablero_antes_de_jugarMesa ;   
     private Teclas[] Tablero_antes_de_jugarJugador ;   
+    private AplicacionUsuario vistaDeUsuario;
+    private Movimiento miMovimiento;
     
     public TableroVirtual(){
         FichasRestantes = new Teclas[110];
@@ -78,20 +83,58 @@ public class TableroVirtual {
                 salida =1;
             }
             else salida =0;          
-        }while(salida != 0);     
+        }while(salida != 0);  //sale del ciclo cuando es cero
+                              //esto quiere decir que es una tecla valida
         FichasRestantes[numeroAleatorio] = null;
         return aleatorio;
     } 
  
+   public void PonerFichaEnMano(Comunicacion Comunica){
+            vistaDeUsuario.ArrayBotonesPrincipales();
+            if(miMovimiento.espaciosVacioParaFichas(vistaDeUsuario.botonesPrincipales)){
+                Teclas aleatori = AgarrarFicha();
+                miMovimiento.PonerFichas(vistaDeUsuario.botonesPrincipales,aleatori);
+                vistaDeUsuario.ArrayBotonesPrincipalesInverso();
+                Comunica.nuevaFichaMano(aleatori);
+            }
+   }
   
    public void Revisar_tableroVirtual(AplicacionUsuario aplicacion_actual){
        
        Teclas[][] teclasJugo = PasarBotonesAMatrizJuegoMesa(aplicacion_actual);     
+       
        if(seCumplieronLasNormas(teclasJugo)){
-           //comunicacion.Enviar_posiciones(teclasJugo);
+            //si en el tablero se complieron las reglas del juego entonces
+            //lo que queda es hacer es uuna comparacion entre las piezas viejas y las 
+            //nuevas y esas posciones nuevas mandarlas 
+            //ningun cambio significa que si en la matriz no hubo ningun cambio 
+            //entonces si se cumplieron las normas entro por el if
+            //pero tecnicamente el jugador deberia es de tomar una ficha
+            int ningunCambio=0;
+            for(int i=0; i<8; i++){
+                for(int j=0; j<16; j++){
+                    aplicacion_actual.comuni.nuevaFichaTablero(teclasJugo[i][j], i, j);
+                     ningunCambio++; 
+
+                            
+                    
+                }
+            }
+            if(ningunCambio==0){
+                PonerFichaEnMano(aplicacion_actual.comuni);
+            }
+            System.out.println(ningunCambio);            
        }else {
+           //cuando se le da a fin del turno y no se cumplieron las normas 
+           //entonces se vuele a la poscicion que estaba antes del turno
+           //y se se tiene que agarrar una nueva ficha (ficha de agarre)
+           //y se manda un termina el turno
+           //ademas que se hace que el panel no se pueda modificar 
             volverAlaPosicionInicial(aplicacion_actual);
+            PonerFichaEnMano(aplicacion_actual.comuni);
        }
+        enableComponents(false);
+        aplicacion_actual.comuni.TerminarTurno();
    }
    
     public boolean seCumplieronLasNormas ( Teclas[][] teclasJugo){       
@@ -110,8 +153,7 @@ public class TableroVirtual {
                     int comodin=0;
                     int Posicioncomodin=0; //si es 1 el comodin se encuentra en la primera posicion
                                            //si es 2 se encuentra en la segunda posicion
-                    
-                      
+                                       
                     Teclas aux = teclasJugo[i][j];
                     //creo un vector auxiliar para el control de las posiciones 
                     //de la fila en la que estoy analizando
@@ -566,6 +608,54 @@ public class TableroVirtual {
      return true;
     }
 
+  
+    public void PonerEnLaMatrizTecla (Teclas teclaAponer , int x , int y ){
+        
+       JButton teclasSeleccionada = BuscarBotonSeleccionado(x,y);
+       System.out.println(teclaAponer.numero);
+       
+       teclasSeleccionada.setText(teclaAponer.numero);
+                
+        if("rojo".equals(teclaAponer.color)){
+            teclasSeleccionada.setBackground(Color.red);
+            ImageIcon img = new ImageIcon("src//imagenes/Red"+teclaAponer.numero+".png");                    
+            teclasSeleccionada.setIcon(new ImageIcon(img.getImage().getScaledInstance(62, -1, Image.SCALE_DEFAULT)));                
+        }    
+               
+        if("azul".equals(teclaAponer.color)){
+            teclasSeleccionada.setBackground(Color.blue);
+            ImageIcon img = new ImageIcon("src//imagenes/Blu"+teclaAponer.numero+".png");                   
+            teclasSeleccionada.setIcon(new ImageIcon(img.getImage().getScaledInstance(62, -1, Image.SCALE_DEFAULT)));                                 
+        }  
+                
+        if("amarillo".equals(teclaAponer.color)){
+            // esto es en el caso de ser vacio 
+            //esto pasa cuando habia algo y se quiero poner sin nada alli
+            if ("0".equals(teclaAponer.numero)){
+                    JButton aux = new JButton();
+                     teclasSeleccionada.setText(aux.getText());
+                     teclasSeleccionada.setBackground(aux.getBackground());
+                     teclasSeleccionada.setIcon(aux.getIcon());                
+        
+            }else{
+                teclasSeleccionada.setBackground(Color.yellow);
+                ImageIcon img = new ImageIcon("src//imagenes/Yel"+teclaAponer.numero+".png");                
+                teclasSeleccionada.setIcon(new ImageIcon(img.getImage().getScaledInstance(62, -1, Image.SCALE_DEFAULT)));                
+             
+            }
+       }  
+        if("negro".equals(teclaAponer.color)){
+            teclasSeleccionada.setBackground(Color.black);  
+            ImageIcon img = new ImageIcon("src//imagenes/Blk"+teclaAponer.numero+".png");               
+            teclasSeleccionada.setIcon(new ImageIcon(img.getImage().getScaledInstance(62, -1, Image.SCALE_DEFAULT)));                
+        }
+    }
+    
+    public void ActivarFuncionesDeTurno(){
+        TeclasAlEmpiezarElTurno(vistaDeUsuario);
+        enableComponents(true);
+        vistaDeUsuario.EndTurn.setEnabled(true);
+    }
     
     public String colorString(Color colorsito){
         if(colorsito == Color.yellow) return "amarillo";
@@ -576,10 +666,10 @@ public class TableroVirtual {
     }
 
     public Color colorFormatoColor(String colorsito){
-        if(colorsito == "amarillo") return Color.yellow;
-        if(colorsito == "azul") return Color.blue;
-        if(colorsito == "rojo") return Color.red;
-        if(colorsito == "negro" ) return Color.black;        
+        if("amarillo".equals(colorsito)) return Color.yellow;
+        if("azul".equals(colorsito)) return Color.blue;
+        if("rojo".equals(colorsito)) return Color.red;
+        if("negro".equals(colorsito) ) return Color.black;        
         return Color.white;
     }
     //ejecutar cuando empiece el turno para que pueda regresar a la posicion original en caso de que no cumpla 
@@ -959,4 +1049,487 @@ public class TableroVirtual {
        teclaSeleccionada.setIcon(boton.getIcon());
    }
    
+   public void setAplicacionUsuario(AplicacionUsuario aplicacion_actual, Movimiento miMov){
+       this.vistaDeUsuario= aplicacion_actual;
+       miMovimiento = miMov;
+   }
+   
+   public void intruccionEmpezarPartida(String Estacion){
+        vistaDeUsuario.challengeButton2.setEnabled(false);
+        vistaDeUsuario.LabelNumeroMaquina.setText(Estacion);
+   }
+           
+    public void intruccionAgarrarFichasIniciales(Comunicacion Comunica){
+
+        for(int i=0;i<14; i++){
+            vistaDeUsuario.ArrayBotonesPrincipales();
+            if(miMovimiento.espaciosVacioParaFichas(vistaDeUsuario.botonesPrincipales)){
+                Teclas aleatori = AgarrarFicha();
+                miMovimiento.PonerFichas(vistaDeUsuario.botonesPrincipales,aleatori);
+                vistaDeUsuario.ArrayBotonesPrincipalesInverso();
+                Comunica.nuevaFichaMano(aleatori);
+            }
+        }
+    }  
+    public void ActivarBotonDE14Fichas(){
+        vistaDeUsuario.challengeButton.setEnabled(true);
+    }
+    
+    public void QuitarFicha(Teclas TeclaSeleccionada){
+        int salida=0;
+        for(int i=0; i!=k ;i++){
+               
+            if(FichasRestantes[i] != null){
+                if(FichasRestantes[i].numero.equals(TeclaSeleccionada.numero))
+                    if(FichasRestantes[i].color.equals(TeclaSeleccionada.color))
+                        salida=i; 
+            }
+        }
+        FichasRestantes[salida] = null;
+    }
+    
+    public JButton BuscarBotonSeleccionado(int i, int j){
+             //llenado de la matriz de todos los botones
+     if ( i== 0  && j==  0) return vistaDeUsuario.rackButton20;
+     if ( i== 0  && j==  1) return vistaDeUsuario.rackButton21;
+     if ( i== 0  && j==  2) return vistaDeUsuario.rackButton22;
+     if ( i== 0  && j==  3) return vistaDeUsuario.rackButton23;
+     if ( i== 0  && j==  4) return vistaDeUsuario.rackButton24;
+     if ( i== 0  && j==  5) return vistaDeUsuario.rackButton25;
+     if ( i== 0  && j==  6) return vistaDeUsuario.rackButton26;
+     if ( i== 0  && j==  7) return vistaDeUsuario.rackButton27;
+     if ( i== 0  && j==  8) return vistaDeUsuario.rackButton28;
+     if ( i== 0  && j==  9) return vistaDeUsuario.rackButton29;
+     if ( i== 0  && j==  10) return vistaDeUsuario.rackButton30;
+     if ( i== 0  && j==  11) return vistaDeUsuario.rackButton31;
+     if ( i== 0  && j==  12) return vistaDeUsuario.rackButton32;
+     if ( i== 0  && j==  13) return vistaDeUsuario.rackButton33;
+     if ( i== 0  && j==  14) return vistaDeUsuario.rackButton34;
+     if ( i== 0  && j==  15) return vistaDeUsuario.rackButton35;
+
+     //fila 2
+     if ( i== 1  && j==  0) return vistaDeUsuario.rackButton36;
+     if ( i== 1  && j==  1) return vistaDeUsuario.rackButton37;
+     if ( i== 1  && j==  2) return vistaDeUsuario.rackButton38;
+     if ( i== 1  && j==  3) return vistaDeUsuario.rackButton39;
+     if ( i== 1  && j==  4) return vistaDeUsuario.rackButton40;
+     if ( i== 1  && j==  5) return vistaDeUsuario.rackButton41;
+     if ( i== 1  && j==  6) return vistaDeUsuario.rackButton42;
+     if ( i== 1  && j==  7) return vistaDeUsuario.rackButton43;
+     if ( i== 1  && j==  8) return vistaDeUsuario.rackButton44;
+     if ( i== 1  && j==  9) return vistaDeUsuario.rackButton45;
+     if ( i== 1  && j==  10) return vistaDeUsuario.rackButton46;
+     if ( i== 1  && j==  11) return vistaDeUsuario.rackButton47;
+     if ( i== 1  && j==  12) return vistaDeUsuario.rackButton48;
+     if ( i== 1  && j==  13) return vistaDeUsuario.rackButton49;
+     if ( i== 1  && j==  14) return vistaDeUsuario.rackButton50;
+     if ( i== 1  && j==  15) return vistaDeUsuario.rackButton51;
+
+     //fila 3
+     if ( i== 2  && j==  0) return vistaDeUsuario.rackButton52;
+     if ( i== 2  && j==  1) return vistaDeUsuario.rackButton53;
+     if ( i== 2  && j==  2) return vistaDeUsuario.rackButton54;
+     if ( i== 2  && j==  3) return vistaDeUsuario.rackButton55;
+     if ( i== 2  && j==  4) return vistaDeUsuario.rackButton56;
+     if ( i== 2  && j==  5) return vistaDeUsuario.rackButton57;
+     if ( i== 2  && j==  6) return vistaDeUsuario.rackButton58;
+     if ( i== 2  && j==  7) return vistaDeUsuario.rackButton59;
+     if ( i== 2  && j==  8) return vistaDeUsuario.rackButton60;
+     if ( i== 2  && j==  9) return vistaDeUsuario.rackButton61;
+     if ( i== 2  && j==  10) return vistaDeUsuario.rackButton62;
+     if ( i== 2  && j==  11) return vistaDeUsuario.rackButton63;
+     if ( i== 2  && j==  12) return vistaDeUsuario.rackButton64;
+     if ( i== 2  && j==  13) return vistaDeUsuario.rackButton65;
+     if ( i== 2  && j==  14) return vistaDeUsuario.rackButton66;
+     if ( i== 2  && j==  15) return vistaDeUsuario.rackButton67;
+
+             //fila 4
+     if ( i== 3  && j==  0) return vistaDeUsuario.rackButton68;
+     if ( i== 3  && j==  1) return vistaDeUsuario.rackButton69;
+     if ( i== 3  && j==  2) return vistaDeUsuario.rackButton70;
+     if ( i== 3  && j==  3) return vistaDeUsuario.rackButton71;
+     if ( i== 3  && j==  4) return vistaDeUsuario.rackButton72;
+     if ( i== 3  && j==  5) return vistaDeUsuario.rackButton73;
+     if ( i== 3  && j==  6) return vistaDeUsuario.rackButton74;
+     if ( i== 3  && j==  7) return vistaDeUsuario.rackButton75;
+     if ( i== 3  && j==  8) return vistaDeUsuario.rackButton76;
+     if ( i== 3  && j==  9) return vistaDeUsuario.rackButton77;
+     if ( i== 3  && j==  10) return vistaDeUsuario.rackButton78;
+     if ( i== 3  && j==  11) return vistaDeUsuario.rackButton79;
+     if ( i== 3  && j==  12) return vistaDeUsuario.rackButton80;
+     if ( i== 3  && j==  13) return vistaDeUsuario.rackButton81;
+     if ( i== 3  && j==  14) return vistaDeUsuario.rackButton82;
+     if ( i== 3  && j==  15) return vistaDeUsuario.rackButton83;
+ 
+     //fila 5
+     if ( i== 4  && j==  0) return vistaDeUsuario.rackButton84;
+     if ( i== 4  && j==  1) return vistaDeUsuario.rackButton85;
+     if ( i== 4  && j==  2) return vistaDeUsuario.rackButton86;
+     if ( i== 4  && j==  3) return vistaDeUsuario.rackButton87;
+     if ( i== 4  && j==  4) return vistaDeUsuario.rackButton88;
+     if ( i== 4  && j==  5) return vistaDeUsuario.rackButton89;
+     if ( i== 4  && j==  6) return vistaDeUsuario.rackButton90;
+     if ( i== 4  && j==  7) return vistaDeUsuario.rackButton91;
+     if ( i== 4  && j==  8) return vistaDeUsuario.rackButton92;
+     if ( i== 4  && j==  9) return vistaDeUsuario.rackButton93;
+     if ( i== 4  && j==  10) return vistaDeUsuario.rackButton94;
+     if ( i== 4  && j==  11) return vistaDeUsuario.rackButton95;
+     if ( i== 4  && j==  12) return vistaDeUsuario.rackButton96;
+     if ( i== 4  && j==  13) return vistaDeUsuario.rackButton97;
+     if ( i== 4  && j==  14) return vistaDeUsuario.rackButton98;
+     if ( i== 4  && j==  15) return vistaDeUsuario.rackButton99;
+
+     //fila 6
+     if ( i== 5  && j==  0) return vistaDeUsuario.rackButton100;
+     if ( i== 5  && j==  1) return vistaDeUsuario.rackButton101;
+     if ( i== 5  && j==  2) return vistaDeUsuario.rackButton102;
+     if ( i== 5  && j==  3) return vistaDeUsuario.rackButton103;
+     if ( i== 5  && j==  4) return vistaDeUsuario.rackButton104;
+     if ( i== 5  && j==  5) return vistaDeUsuario.rackButton105;
+     if ( i== 5  && j==  6) return vistaDeUsuario.rackButton106;
+     if ( i== 5  && j==  7) return vistaDeUsuario.rackButton107;
+     if ( i== 5  && j==  8) return vistaDeUsuario.rackButton108;
+     if ( i== 5  && j==  9) return vistaDeUsuario.rackButton109;
+     if ( i== 5  && j==  10) return vistaDeUsuario.rackButton110;
+     if ( i== 5  && j==  11) return vistaDeUsuario.rackButton111;
+     if ( i== 5  && j==  12) return vistaDeUsuario.rackButton112;
+     if ( i== 5  && j==  13) return vistaDeUsuario.rackButton113;
+     if ( i== 5  && j==  14) return vistaDeUsuario.rackButton114;
+     if ( i== 5  && j==  15) return vistaDeUsuario.rackButton115;
+     
+     
+     //fila 6
+     if ( i== 6  && j==  0) return vistaDeUsuario.rackButton116;
+     if ( i== 6  && j==  1) return vistaDeUsuario.rackButton117;
+     if ( i== 6  && j==  2) return vistaDeUsuario.rackButton118;
+     if ( i== 6  && j==  3) return vistaDeUsuario.rackButton119;
+     if ( i== 6  && j==  4) return vistaDeUsuario.rackButton120;
+     if ( i== 6  && j==  5) return vistaDeUsuario.rackButton121;
+     if ( i== 6  && j==  6) return vistaDeUsuario.rackButton122;
+     if ( i== 6  && j==  7) return vistaDeUsuario.rackButton123;
+     if ( i== 6  && j==  8) return vistaDeUsuario.rackButton124;
+     if ( i== 6  && j==  9) return vistaDeUsuario.rackButton125;
+     if ( i== 6  && j==  10) return vistaDeUsuario.rackButton126;
+     if ( i== 6  && j==  11) return vistaDeUsuario.rackButton127;
+     if ( i== 6  && j==  12) return vistaDeUsuario.rackButton128;
+     if ( i== 6  && j==  13) return vistaDeUsuario.rackButton129;
+     if ( i== 6  && j==  14) return vistaDeUsuario.rackButton130;
+     if ( i== 6  && j==  15) return vistaDeUsuario.rackButton131;  
+
+     
+     //fila 7
+     if ( i== 7  && j==  0) return vistaDeUsuario.rackButton132;
+     if ( i== 7  && j==  1) return vistaDeUsuario.rackButton133;
+     if ( i== 7  && j==  2) return vistaDeUsuario.rackButton134;
+     if ( i== 7  && j==  3) return vistaDeUsuario.rackButton135;
+     if ( i== 7  && j==  4) return vistaDeUsuario.rackButton136;
+     if ( i== 7  && j==  5) return vistaDeUsuario.rackButton137;
+     if ( i== 7  && j==  6) return vistaDeUsuario.rackButton138;
+     if ( i== 7  && j==  7) return vistaDeUsuario.rackButton139;
+     if ( i== 7  && j==  8) return vistaDeUsuario.rackButton140;
+     if ( i== 7  && j==  9) return vistaDeUsuario.rackButton141;
+     if ( i== 7  && j==  10) return vistaDeUsuario.rackButton142;
+     if ( i== 7  && j==  11) return vistaDeUsuario.rackButton143;
+     if ( i== 7  && j==  12) return vistaDeUsuario.rackButton144;
+     if ( i== 7  && j==  13) return vistaDeUsuario.rackButton145;
+     if ( i== 7  && j==  14) return vistaDeUsuario.rackButton146;
+     if ( i== 7  && j==  15) return vistaDeUsuario.rackButton147;
+     
+     vistaDeUsuario.rackButton147.setDisabledIcon(vistaDeUsuario.rackButton147.getIcon());
+        return null;
+    }
+    
+    
+    public void enableComponents(boolean enable) {
+      //fila 1 
+      vistaDeUsuario.rackButton20.setDisabledIcon(vistaDeUsuario.rackButton20.getIcon());
+      vistaDeUsuario.rackButton21.setDisabledIcon(vistaDeUsuario.rackButton21.getIcon());
+      vistaDeUsuario.rackButton22.setDisabledIcon(vistaDeUsuario.rackButton22.getIcon());
+      vistaDeUsuario.rackButton23.setDisabledIcon(vistaDeUsuario.rackButton23.getIcon());
+      vistaDeUsuario.rackButton24.setDisabledIcon(vistaDeUsuario.rackButton24.getIcon());
+      vistaDeUsuario.rackButton25.setDisabledIcon(vistaDeUsuario.rackButton25.getIcon());
+      vistaDeUsuario.rackButton26.setDisabledIcon(vistaDeUsuario.rackButton26.getIcon());
+      vistaDeUsuario.rackButton27.setDisabledIcon(vistaDeUsuario.rackButton27.getIcon());
+      vistaDeUsuario.rackButton28.setDisabledIcon(vistaDeUsuario.rackButton28.getIcon());
+      vistaDeUsuario.rackButton29.setDisabledIcon(vistaDeUsuario.rackButton29.getIcon());
+      vistaDeUsuario.rackButton30.setDisabledIcon(vistaDeUsuario.rackButton30.getIcon());
+      vistaDeUsuario.rackButton31.setDisabledIcon(vistaDeUsuario.rackButton31.getIcon());
+      vistaDeUsuario.rackButton32.setDisabledIcon(vistaDeUsuario.rackButton32.getIcon());
+      vistaDeUsuario.rackButton33.setDisabledIcon(vistaDeUsuario.rackButton33.getIcon());
+      vistaDeUsuario.rackButton34.setDisabledIcon(vistaDeUsuario.rackButton34.getIcon());
+      vistaDeUsuario.rackButton35.setDisabledIcon(vistaDeUsuario.rackButton35.getIcon());
+
+      //fila 2
+      vistaDeUsuario.rackButton36.setDisabledIcon(vistaDeUsuario.rackButton36.getIcon());
+      vistaDeUsuario.rackButton37.setDisabledIcon(vistaDeUsuario.rackButton37.getIcon());
+      vistaDeUsuario.rackButton38.setDisabledIcon(vistaDeUsuario.rackButton38.getIcon());
+      vistaDeUsuario.rackButton39.setDisabledIcon(vistaDeUsuario.rackButton39.getIcon());
+      vistaDeUsuario.rackButton40.setDisabledIcon(vistaDeUsuario.rackButton40.getIcon());
+      vistaDeUsuario.rackButton41.setDisabledIcon(vistaDeUsuario.rackButton41.getIcon());
+      vistaDeUsuario.rackButton42.setDisabledIcon(vistaDeUsuario.rackButton42.getIcon());
+      vistaDeUsuario.rackButton43.setDisabledIcon(vistaDeUsuario.rackButton43.getIcon());
+      vistaDeUsuario.rackButton44.setDisabledIcon(vistaDeUsuario.rackButton44.getIcon());
+      vistaDeUsuario.rackButton45.setDisabledIcon(vistaDeUsuario.rackButton45.getIcon());
+      vistaDeUsuario.rackButton46.setDisabledIcon(vistaDeUsuario.rackButton46.getIcon());
+      vistaDeUsuario.rackButton47.setDisabledIcon(vistaDeUsuario.rackButton47.getIcon());
+      vistaDeUsuario.rackButton48.setDisabledIcon(vistaDeUsuario.rackButton48.getIcon());
+      vistaDeUsuario.rackButton49.setDisabledIcon(vistaDeUsuario.rackButton49.getIcon());
+      vistaDeUsuario.rackButton50.setDisabledIcon(vistaDeUsuario.rackButton50.getIcon());
+      vistaDeUsuario.rackButton51.setDisabledIcon(vistaDeUsuario.rackButton51.getIcon());
+
+      //fila 3
+      vistaDeUsuario.rackButton52.setDisabledIcon(vistaDeUsuario.rackButton52.getIcon());
+      vistaDeUsuario.rackButton53.setDisabledIcon(vistaDeUsuario.rackButton53.getIcon());
+      vistaDeUsuario.rackButton54.setDisabledIcon(vistaDeUsuario.rackButton54.getIcon());
+      vistaDeUsuario.rackButton55.setDisabledIcon(vistaDeUsuario.rackButton55.getIcon());
+      vistaDeUsuario.rackButton56.setDisabledIcon(vistaDeUsuario.rackButton56.getIcon());
+      vistaDeUsuario.rackButton57.setDisabledIcon(vistaDeUsuario.rackButton57.getIcon());
+      vistaDeUsuario.rackButton58.setDisabledIcon(vistaDeUsuario.rackButton58.getIcon());
+      vistaDeUsuario.rackButton59.setDisabledIcon(vistaDeUsuario.rackButton59.getIcon());
+      vistaDeUsuario.rackButton60.setDisabledIcon(vistaDeUsuario.rackButton60.getIcon());
+      vistaDeUsuario.rackButton61.setDisabledIcon(vistaDeUsuario.rackButton61.getIcon());
+      vistaDeUsuario.rackButton62.setDisabledIcon(vistaDeUsuario.rackButton62.getIcon());
+      vistaDeUsuario.rackButton63.setDisabledIcon(vistaDeUsuario.rackButton63.getIcon());
+      vistaDeUsuario.rackButton64.setDisabledIcon(vistaDeUsuario.rackButton64.getIcon());
+      vistaDeUsuario.rackButton65.setDisabledIcon(vistaDeUsuario.rackButton65.getIcon());
+      vistaDeUsuario.rackButton66.setDisabledIcon(vistaDeUsuario.rackButton66.getIcon());
+      vistaDeUsuario.rackButton67.setDisabledIcon(vistaDeUsuario.rackButton67.getIcon());
+
+              //fila 4
+      vistaDeUsuario.rackButton68.setDisabledIcon(vistaDeUsuario.rackButton68.getIcon());
+      vistaDeUsuario.rackButton69.setDisabledIcon(vistaDeUsuario.rackButton69.getIcon());
+      vistaDeUsuario.rackButton70.setDisabledIcon(vistaDeUsuario.rackButton70.getIcon());
+      vistaDeUsuario.rackButton71.setDisabledIcon(vistaDeUsuario.rackButton71.getIcon());
+      vistaDeUsuario.rackButton72.setDisabledIcon(vistaDeUsuario.rackButton72.getIcon());
+      vistaDeUsuario.rackButton73.setDisabledIcon(vistaDeUsuario.rackButton73.getIcon());
+      vistaDeUsuario.rackButton74.setDisabledIcon(vistaDeUsuario.rackButton74.getIcon());
+      vistaDeUsuario.rackButton75.setDisabledIcon(vistaDeUsuario.rackButton75.getIcon());
+      vistaDeUsuario.rackButton76.setDisabledIcon(vistaDeUsuario.rackButton76.getIcon());
+      vistaDeUsuario.rackButton77.setDisabledIcon(vistaDeUsuario.rackButton77.getIcon());
+      vistaDeUsuario.rackButton78.setDisabledIcon(vistaDeUsuario.rackButton78.getIcon());
+      vistaDeUsuario.rackButton79.setDisabledIcon(vistaDeUsuario.rackButton79.getIcon());
+      vistaDeUsuario.rackButton80.setDisabledIcon(vistaDeUsuario.rackButton80.getIcon());
+      vistaDeUsuario.rackButton81.setDisabledIcon(vistaDeUsuario.rackButton81.getIcon());
+      vistaDeUsuario.rackButton82.setDisabledIcon(vistaDeUsuario.rackButton82.getIcon());
+      vistaDeUsuario.rackButton83.setDisabledIcon(vistaDeUsuario.rackButton83.getIcon());
+
+      //fila 5
+      vistaDeUsuario.rackButton84.setDisabledIcon(vistaDeUsuario.rackButton84.getIcon());
+      vistaDeUsuario.rackButton85.setDisabledIcon(vistaDeUsuario.rackButton85.getIcon());
+      vistaDeUsuario.rackButton86.setDisabledIcon(vistaDeUsuario.rackButton86.getIcon());
+      vistaDeUsuario.rackButton87.setDisabledIcon(vistaDeUsuario.rackButton87.getIcon());
+      vistaDeUsuario.rackButton88.setDisabledIcon(vistaDeUsuario.rackButton88.getIcon());
+      vistaDeUsuario.rackButton89.setDisabledIcon(vistaDeUsuario.rackButton89.getIcon());
+      vistaDeUsuario.rackButton90.setDisabledIcon(vistaDeUsuario.rackButton90.getIcon());
+      vistaDeUsuario.rackButton91.setDisabledIcon(vistaDeUsuario.rackButton91.getIcon());
+      vistaDeUsuario.rackButton92.setDisabledIcon(vistaDeUsuario.rackButton92.getIcon());
+      vistaDeUsuario.rackButton93.setDisabledIcon(vistaDeUsuario.rackButton93.getIcon());
+      vistaDeUsuario.rackButton94.setDisabledIcon(vistaDeUsuario.rackButton94.getIcon());
+      vistaDeUsuario.rackButton95.setDisabledIcon(vistaDeUsuario.rackButton95.getIcon());
+      vistaDeUsuario.rackButton96.setDisabledIcon(vistaDeUsuario.rackButton96.getIcon());
+      vistaDeUsuario.rackButton97.setDisabledIcon(vistaDeUsuario.rackButton97.getIcon());
+      vistaDeUsuario.rackButton98.setDisabledIcon(vistaDeUsuario.rackButton98.getIcon());
+      vistaDeUsuario.rackButton99.setDisabledIcon(vistaDeUsuario.rackButton99.getIcon());
+
+      //fila 6
+      vistaDeUsuario.rackButton100.setDisabledIcon(vistaDeUsuario.rackButton100.getIcon());
+      vistaDeUsuario.rackButton101.setDisabledIcon(vistaDeUsuario.rackButton101.getIcon());
+      vistaDeUsuario.rackButton102.setDisabledIcon(vistaDeUsuario.rackButton102.getIcon());
+      vistaDeUsuario.rackButton103.setDisabledIcon(vistaDeUsuario.rackButton103.getIcon());
+      vistaDeUsuario.rackButton104.setDisabledIcon(vistaDeUsuario.rackButton104.getIcon());
+      vistaDeUsuario.rackButton105.setDisabledIcon(vistaDeUsuario.rackButton105.getIcon());
+      vistaDeUsuario.rackButton106.setDisabledIcon(vistaDeUsuario.rackButton106.getIcon());
+      vistaDeUsuario.rackButton107.setDisabledIcon(vistaDeUsuario.rackButton107.getIcon());
+      vistaDeUsuario.rackButton108.setDisabledIcon(vistaDeUsuario.rackButton108.getIcon());
+      vistaDeUsuario.rackButton109.setDisabledIcon(vistaDeUsuario.rackButton109.getIcon());
+      vistaDeUsuario.rackButton110.setDisabledIcon(vistaDeUsuario.rackButton110.getIcon());
+      vistaDeUsuario.rackButton111.setDisabledIcon(vistaDeUsuario.rackButton111.getIcon());
+      vistaDeUsuario.rackButton112.setDisabledIcon(vistaDeUsuario.rackButton112.getIcon());
+      vistaDeUsuario.rackButton113.setDisabledIcon(vistaDeUsuario.rackButton113.getIcon());
+      vistaDeUsuario.rackButton114.setDisabledIcon(vistaDeUsuario.rackButton114.getIcon());
+      vistaDeUsuario.rackButton115.setDisabledIcon(vistaDeUsuario.rackButton115.getIcon());
+
+
+      //fila 6
+      vistaDeUsuario.rackButton116.setDisabledIcon(vistaDeUsuario.rackButton116.getIcon());
+      vistaDeUsuario.rackButton117.setDisabledIcon(vistaDeUsuario.rackButton117.getIcon());
+      vistaDeUsuario.rackButton118.setDisabledIcon(vistaDeUsuario.rackButton118.getIcon());
+      vistaDeUsuario.rackButton119.setDisabledIcon(vistaDeUsuario.rackButton119.getIcon());
+      vistaDeUsuario.rackButton120.setDisabledIcon(vistaDeUsuario.rackButton120.getIcon());
+      vistaDeUsuario.rackButton121.setDisabledIcon(vistaDeUsuario.rackButton121.getIcon());
+      vistaDeUsuario.rackButton122.setDisabledIcon(vistaDeUsuario.rackButton122.getIcon());
+      vistaDeUsuario.rackButton123.setDisabledIcon(vistaDeUsuario.rackButton123.getIcon());
+      vistaDeUsuario.rackButton124.setDisabledIcon(vistaDeUsuario.rackButton124.getIcon());
+      vistaDeUsuario.rackButton125.setDisabledIcon(vistaDeUsuario.rackButton125.getIcon());
+      vistaDeUsuario.rackButton126.setDisabledIcon(vistaDeUsuario.rackButton126.getIcon());
+      vistaDeUsuario.rackButton127.setDisabledIcon(vistaDeUsuario.rackButton127.getIcon());
+      vistaDeUsuario.rackButton128.setDisabledIcon(vistaDeUsuario.rackButton128.getIcon());
+      vistaDeUsuario.rackButton129.setDisabledIcon(vistaDeUsuario.rackButton129.getIcon());
+      vistaDeUsuario.rackButton130.setDisabledIcon(vistaDeUsuario.rackButton130.getIcon());
+      vistaDeUsuario.rackButton131.setDisabledIcon(vistaDeUsuario.rackButton131.getIcon());  
+
+
+      //fila 7
+      vistaDeUsuario.rackButton132.setDisabledIcon(vistaDeUsuario.rackButton132.getIcon());
+      vistaDeUsuario.rackButton133.setDisabledIcon(vistaDeUsuario.rackButton133.getIcon());
+      vistaDeUsuario.rackButton134.setDisabledIcon(vistaDeUsuario.rackButton134.getIcon());
+      vistaDeUsuario.rackButton135.setDisabledIcon(vistaDeUsuario.rackButton135.getIcon());
+      vistaDeUsuario.rackButton136.setDisabledIcon(vistaDeUsuario.rackButton136.getIcon());
+      vistaDeUsuario.rackButton137.setDisabledIcon(vistaDeUsuario.rackButton137.getIcon());
+      vistaDeUsuario.rackButton138.setDisabledIcon(vistaDeUsuario.rackButton138.getIcon());
+      vistaDeUsuario.rackButton139.setDisabledIcon(vistaDeUsuario.rackButton139.getIcon());
+      vistaDeUsuario.rackButton140.setDisabledIcon(vistaDeUsuario.rackButton140.getIcon());
+      vistaDeUsuario.rackButton141.setDisabledIcon(vistaDeUsuario.rackButton141.getIcon());
+      vistaDeUsuario.rackButton142.setDisabledIcon(vistaDeUsuario.rackButton142.getIcon());
+      vistaDeUsuario.rackButton143.setDisabledIcon(vistaDeUsuario.rackButton143.getIcon());
+      vistaDeUsuario.rackButton144.setDisabledIcon(vistaDeUsuario.rackButton144.getIcon());
+      vistaDeUsuario.rackButton145.setDisabledIcon(vistaDeUsuario.rackButton145.getIcon());
+      vistaDeUsuario.rackButton146.setDisabledIcon(vistaDeUsuario.rackButton146.getIcon());
+      vistaDeUsuario.rackButton147.setDisabledIcon(vistaDeUsuario.rackButton147.getIcon());
+      
+     vistaDeUsuario.rackButton20.setEnabled(enable);
+     vistaDeUsuario.rackButton21.setEnabled(enable);
+     vistaDeUsuario.rackButton22.setEnabled(enable);
+     vistaDeUsuario.rackButton23.setEnabled(enable);
+     vistaDeUsuario.rackButton24.setEnabled(enable);
+     vistaDeUsuario.rackButton25.setEnabled(enable);
+     vistaDeUsuario.rackButton26.setEnabled(enable);
+     vistaDeUsuario.rackButton27.setEnabled(enable);
+     vistaDeUsuario.rackButton28.setEnabled(enable);
+     vistaDeUsuario.rackButton29.setEnabled(enable);
+     vistaDeUsuario.rackButton30.setEnabled(enable);
+     vistaDeUsuario.rackButton31.setEnabled(enable);
+     vistaDeUsuario.rackButton32.setEnabled(enable);
+     vistaDeUsuario.rackButton33.setEnabled(enable);
+     vistaDeUsuario.rackButton34.setEnabled(enable);
+     vistaDeUsuario.rackButton35.setEnabled(enable);
+
+     //fila 2
+     vistaDeUsuario.rackButton36.setEnabled(enable);
+     vistaDeUsuario.rackButton37.setEnabled(enable);
+     vistaDeUsuario.rackButton38.setEnabled(enable);
+     vistaDeUsuario.rackButton39.setEnabled(enable);
+     vistaDeUsuario.rackButton40.setEnabled(enable);
+     vistaDeUsuario.rackButton41.setEnabled(enable);
+     vistaDeUsuario.rackButton42.setEnabled(enable);
+     vistaDeUsuario.rackButton43.setEnabled(enable);
+     vistaDeUsuario.rackButton44.setEnabled(enable);
+     vistaDeUsuario.rackButton45.setEnabled(enable);
+     vistaDeUsuario.rackButton46.setEnabled(enable);
+     vistaDeUsuario.rackButton47.setEnabled(enable);
+     vistaDeUsuario.rackButton48.setEnabled(enable);
+     vistaDeUsuario.rackButton49.setEnabled(enable);
+     vistaDeUsuario.rackButton50.setEnabled(enable);
+     vistaDeUsuario.rackButton51.setEnabled(enable);
+
+     //fila 3
+     vistaDeUsuario.rackButton52.setEnabled(enable);
+     vistaDeUsuario.rackButton53.setEnabled(enable);
+     vistaDeUsuario.rackButton54.setEnabled(enable);
+     vistaDeUsuario.rackButton55.setEnabled(enable);
+     vistaDeUsuario.rackButton56.setEnabled(enable);
+     vistaDeUsuario.rackButton57.setEnabled(enable);
+     vistaDeUsuario.rackButton58.setEnabled(enable);
+     vistaDeUsuario.rackButton59.setEnabled(enable);
+     vistaDeUsuario.rackButton60.setEnabled(enable);
+     vistaDeUsuario.rackButton61.setEnabled(enable);
+     vistaDeUsuario.rackButton62.setEnabled(enable);
+     vistaDeUsuario.rackButton63.setEnabled(enable);
+     vistaDeUsuario.rackButton64.setEnabled(enable);
+     vistaDeUsuario.rackButton65.setEnabled(enable);
+     vistaDeUsuario.rackButton66.setEnabled(enable);
+     vistaDeUsuario.rackButton67.setEnabled(enable);
+
+             //fila 4
+     vistaDeUsuario.rackButton68.setEnabled(enable);
+     vistaDeUsuario.rackButton69.setEnabled(enable);
+     vistaDeUsuario.rackButton70.setEnabled(enable);
+     vistaDeUsuario.rackButton71.setEnabled(enable);
+     vistaDeUsuario.rackButton72.setEnabled(enable);
+     vistaDeUsuario.rackButton73.setEnabled(enable);
+     vistaDeUsuario.rackButton74.setEnabled(enable);
+     vistaDeUsuario.rackButton75.setEnabled(enable);
+     vistaDeUsuario.rackButton76.setEnabled(enable);
+     vistaDeUsuario.rackButton77.setEnabled(enable);
+     vistaDeUsuario.rackButton78.setEnabled(enable);
+     vistaDeUsuario.rackButton79.setEnabled(enable);
+     vistaDeUsuario.rackButton80.setEnabled(enable);
+     vistaDeUsuario.rackButton81.setEnabled(enable);
+     vistaDeUsuario.rackButton82.setEnabled(enable);
+     vistaDeUsuario.rackButton83.setEnabled(enable);
+ 
+     //fila 5
+     vistaDeUsuario.rackButton84.setEnabled(enable);
+     vistaDeUsuario.rackButton85.setEnabled(enable);
+     vistaDeUsuario.rackButton86.setEnabled(enable);
+     vistaDeUsuario.rackButton87.setEnabled(enable);
+     vistaDeUsuario.rackButton88.setEnabled(enable);
+     vistaDeUsuario.rackButton89.setEnabled(enable);
+     vistaDeUsuario.rackButton90.setEnabled(enable);
+     vistaDeUsuario.rackButton91.setEnabled(enable);
+     vistaDeUsuario.rackButton92.setEnabled(enable);
+     vistaDeUsuario.rackButton93.setEnabled(enable);
+     vistaDeUsuario.rackButton94.setEnabled(enable);
+     vistaDeUsuario.rackButton95.setEnabled(enable);
+     vistaDeUsuario.rackButton96.setEnabled(enable);
+     vistaDeUsuario.rackButton97.setEnabled(enable);
+     vistaDeUsuario.rackButton98.setEnabled(enable);
+     vistaDeUsuario.rackButton99.setEnabled(enable);
+
+     //fila 6
+     vistaDeUsuario.rackButton100.setEnabled(enable);
+     vistaDeUsuario.rackButton101.setEnabled(enable);
+     vistaDeUsuario.rackButton102.setEnabled(enable);
+     vistaDeUsuario.rackButton103.setEnabled(enable);
+     vistaDeUsuario.rackButton104.setEnabled(enable);
+     vistaDeUsuario.rackButton105.setEnabled(enable);
+     vistaDeUsuario.rackButton106.setEnabled(enable);
+     vistaDeUsuario.rackButton107.setEnabled(enable);
+     vistaDeUsuario.rackButton108.setEnabled(enable);
+     vistaDeUsuario.rackButton109.setEnabled(enable);
+     vistaDeUsuario.rackButton110.setEnabled(enable);
+     vistaDeUsuario.rackButton111.setEnabled(enable);
+     vistaDeUsuario.rackButton112.setEnabled(enable);
+     vistaDeUsuario.rackButton113.setEnabled(enable);
+     vistaDeUsuario.rackButton114.setEnabled(enable);
+     vistaDeUsuario.rackButton115.setEnabled(enable);
+     
+     
+     //fila 6
+     vistaDeUsuario.rackButton116.setEnabled(enable);
+     vistaDeUsuario.rackButton117.setEnabled(enable);
+     vistaDeUsuario.rackButton118.setEnabled(enable);
+     vistaDeUsuario.rackButton119.setEnabled(enable);
+     vistaDeUsuario.rackButton120.setEnabled(enable);
+     vistaDeUsuario.rackButton121.setEnabled(enable);
+     vistaDeUsuario.rackButton122.setEnabled(enable);
+     vistaDeUsuario.rackButton123.setEnabled(enable);
+     vistaDeUsuario.rackButton124.setEnabled(enable);
+     vistaDeUsuario.rackButton125.setEnabled(enable);
+     vistaDeUsuario.rackButton126.setEnabled(enable);
+     vistaDeUsuario.rackButton127.setEnabled(enable);
+     vistaDeUsuario.rackButton128.setEnabled(enable);
+     vistaDeUsuario.rackButton129.setEnabled(enable);
+     vistaDeUsuario.rackButton130.setEnabled(enable);
+     vistaDeUsuario.rackButton131.setEnabled(enable);  
+
+     
+     //fila 7
+     vistaDeUsuario.rackButton132.setEnabled(enable);
+     vistaDeUsuario.rackButton133.setEnabled(enable);
+     vistaDeUsuario.rackButton134.setEnabled(enable);
+     vistaDeUsuario.rackButton135.setEnabled(enable);
+     vistaDeUsuario.rackButton136.setEnabled(enable);
+     vistaDeUsuario.rackButton137.setEnabled(enable);
+     vistaDeUsuario.rackButton138.setEnabled(enable);
+     vistaDeUsuario.rackButton139.setEnabled(enable);
+     vistaDeUsuario.rackButton140.setEnabled(enable);
+     vistaDeUsuario.rackButton141.setEnabled(enable);
+     vistaDeUsuario.rackButton142.setEnabled(enable);
+     vistaDeUsuario.rackButton143.setEnabled(enable);
+     vistaDeUsuario.rackButton144.setEnabled(enable);
+     vistaDeUsuario.rackButton145.setEnabled(enable);
+     vistaDeUsuario.rackButton146.setEnabled(enable);
+     vistaDeUsuario.rackButton147.setEnabled(enable);
+    }
 }

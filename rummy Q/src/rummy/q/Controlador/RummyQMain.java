@@ -12,9 +12,6 @@ import rummy.q.Vista.AplicacionUsuario;
  * @author herick
  */
 public class RummyQMain {
-
-    /////Model objects/////////////////// objetos a ser controlados para tener todos unidos
-    private TableroVirtual MiTablero;
     
         public RummyQMain() {
 
@@ -27,11 +24,9 @@ public class RummyQMain {
             Logger.getLogger(Scrabble.class.getName()).log(Level.SEVERE, null, ex);
         }//end try/catch*/
 
-        ////END MODEL//////////////////////////////////
-        MiTablero = new TableroVirtual(); 
+
         ////VIEW//////////////////////////////////////
         AplicacionUsuario boardWindow= new AplicacionUsuario();
-        boardWindow.mitablerito(MiTablero);
         boardWindow.setVisible(true);
 
         

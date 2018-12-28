@@ -27,7 +27,7 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
     /**
      * Creates new form AplicacionUsuario
      */
-    private TableroVirtual MiTablero;
+    private TableroVirtual MiTablero= new TableroVirtual();
     private Movimiento miMovimiento =new Movimiento(this);
     public int Seleccionado_mouse ;
     public JButton BotonSeleccionado = new JButton();
@@ -39,18 +39,15 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
     public AplicacionUsuario() {
         initComponents(); 
         Seleccionado_mouse=0;
-        
         jComboBox1.removeAllItems();
         jComboBox2.removeAllItems();
         for(String puerto: Comunicacion.listaPuertos()){
             jComboBox1.addItem(puerto);
             jComboBox2.addItem(puerto);
         }
+        
     }
     
-        public void mitablerito ( TableroVirtual MiTablerito){
-         MiTablero=MiTablerito;
-      }
 
     public void ArrayBotonesPrincipales(){
         botonesPrincipales = new JButton[19];
@@ -109,7 +106,6 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
     private void initComponents() {
 
         controlPanel = new javax.swing.JPanel();
-        startNewGameButton = new javax.swing.JButton();
         rackButton8 = new javax.swing.JButton();
         instructionLabel = new javax.swing.JLabel();
         player1Label = new javax.swing.JLabel();
@@ -145,6 +141,8 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
         challengeButton1 = new javax.swing.JButton();
+        challengeButton2 = new javax.swing.JButton();
+        LabelNumeroMaquina = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         rackButton20 = new javax.swing.JButton();
         rackButton22 = new javax.swing.JButton();
@@ -277,19 +275,11 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
-        setMaximumSize(new java.awt.Dimension(797, 754));
         setMinimumSize(new java.awt.Dimension(797, 754));
 
         controlPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         controlPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         controlPanel.setPreferredSize(new java.awt.Dimension(616, 151));
-
-        startNewGameButton.setText("Start New Game");
-        startNewGameButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startNewGameButtonActionPerformed(evt);
-            }
-        });
 
         rackButton8.setPreferredSize(new java.awt.Dimension(80, 62));
         rackButton8.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -303,7 +293,7 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
             }
         });
 
-        instructionLabel.setText("Select Space that you want to place the tile in...");
+        instructionLabel.setText("MAQUINA NUMERO :");
 
         player1Label.setText("Jugador 1 Fichas:");
 
@@ -313,7 +303,8 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
 
         player2Score.setText("0");
 
-        challengeButton.setText("Agarrar Ficha");
+        challengeButton.setText("Agarrar Ficha(14 primeras)");
+        challengeButton.setEnabled(false);
         challengeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 challengeButtonActionPerformed(evt);
@@ -554,6 +545,7 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
         });
 
         EndTurn.setText("End Turn");
+        EndTurn.setEnabled(false);
         EndTurn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EndTurnActionPerformed(evt);
@@ -574,6 +566,15 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
                 challengeButton1ActionPerformed(evt);
             }
         });
+
+        challengeButton2.setText("Empezar Partida SOLO la maquina 00");
+        challengeButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                challengeButton2ActionPerformed(evt);
+            }
+        });
+
+        LabelNumeroMaquina.setText("00");
 
         javax.swing.GroupLayout controlPanelLayout = new javax.swing.GroupLayout(controlPanel);
         controlPanel.setLayout(controlPanelLayout);
@@ -608,27 +609,27 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
                         .addComponent(player4Score1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(9, 9, 9))
                     .addGroup(controlPanelLayout.createSequentialGroup()
-                        .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(controlPanelLayout.createSequentialGroup()
-                                .addComponent(rackButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rackButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rackButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(challengeButton1))
-                            .addGroup(controlPanelLayout.createSequentialGroup()
-                                .addComponent(rackButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rackButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rackButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rackButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jComboBox1, 0, 283, Short.MAX_VALUE)
-                                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(rackButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rackButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rackButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rackButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jComboBox1, 0, 283, Short.MAX_VALUE)
+                                .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(challengeButton1, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(controlPanelLayout.createSequentialGroup()
+                        .addComponent(rackButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rackButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rackButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(challengeButton2)
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(controlPanelLayout.createSequentialGroup()
                 .addComponent(rackButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -636,10 +637,8 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
                 .addComponent(rackButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(controlPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(startNewGameButton)
-                    .addComponent(EndTurn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(EndTurn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                 .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(player1Label)
                     .addComponent(player2Label))
@@ -648,48 +647,52 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
                     .addComponent(player2Score, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(player1Score, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(controlPanelLayout.createSequentialGroup()
                         .addComponent(player3ScoreLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(player3Score1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(instructionLabel))
+                        .addComponent(player3Score1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(controlPanelLayout.createSequentialGroup()
                         .addComponent(player3ScoreLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(player4Score, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(player3ScoreLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(challengeButton)))
-                .addGap(68, 68, 68))
+                        .addComponent(player3ScoreLabel2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(controlPanelLayout.createSequentialGroup()
+                        .addComponent(instructionLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(LabelNumeroMaquina))
+                    .addComponent(challengeButton))
+                .addGap(30, 30, 30))
         );
         controlPanelLayout.setVerticalGroup(
             controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlPanelLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
+                .addGap(10, 10, 10)
                 .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(startNewGameButton)
                     .addComponent(player1Label)
                     .addComponent(player1Score)
                     .addComponent(player3ScoreLabel)
                     .addComponent(player3Score1)
-                    .addComponent(instructionLabel))
+                    .addComponent(instructionLabel)
+                    .addComponent(LabelNumeroMaquina))
                 .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(controlPanelLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
+                        .addGap(16, 16, 16)
                         .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(player2Label)
                             .addComponent(player2Score)
                             .addComponent(player3ScoreLabel1)
                             .addComponent(player4Score)
-                            .addComponent(challengeButton)
                             .addComponent(player3ScoreLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controlPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(EndTurn)
+                        .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(challengeButton)
+                            .addComponent(EndTurn))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(controlPanelLayout.createSequentialGroup()
@@ -724,7 +727,9 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
                             .addComponent(rackButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(rackButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(rackButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(challengeButton1, javax.swing.GroupLayout.Alignment.LEADING))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, controlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(challengeButton1)
+                                .addComponent(challengeButton2)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(player4Score1))
         );
@@ -2688,8 +2693,8 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 787, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(controlPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 775, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3786,12 +3791,8 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
 
     private void challengeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_challengeButtonActionPerformed
         // TODO add your handling code here:
-        ArrayBotonesPrincipales();
-        if(miMovimiento.espaciosVacioParaFichas(botonesPrincipales)){
-            Teclas aleatorio = MiTablero.AgarrarFicha();
-            miMovimiento.PonerFichas(botonesPrincipales,aleatorio);
-            ArrayBotonesPrincipalesInverso();
-        }
+        MiTablero.intruccionAgarrarFichasIniciales(comuni);
+        challengeButton.setEnabled(false);
     }//GEN-LAST:event_challengeButtonActionPerformed
 
     private void rackButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rackButton8ActionPerformed
@@ -3803,20 +3804,19 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
         miMovimiento.BotonPresionado(evt,rackButton8);
     }//GEN-LAST:event_rackButton8MousePressed
 
-    private void startNewGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startNewGameButtonActionPerformed
-    comuni.IniciarPartida();
-    MiTablero.TeclasAlEmpiezarElTurno(this);
-    }//GEN-LAST:event_startNewGameButtonActionPerformed
-
     private void EndTurnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EndTurnActionPerformed
         // TODO add your handling code here:
         MiTablero.Revisar_tableroVirtual(this);
+        EndTurn.setEnabled(false);
     }//GEN-LAST:event_EndTurnActionPerformed
 
     private void challengeButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_challengeButton1ActionPerformed
         // TODO add your handling code here:
+    MiTablero.setAplicacionUsuario(this, miMovimiento);
     comuni = new Comunicacion(jComboBox1.getSelectedIndex(),jComboBox2.getSelectedIndex());
+    comuni.TableroVirtual(MiTablero);
     comuni.RecibirTrama();
+    MiTablero.enableComponents(false);
     }//GEN-LAST:event_challengeButton1ActionPerformed
 
     private void rackButton122MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rackButton122MousePressed
@@ -4053,10 +4053,18 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
         // TODO add your handling code here:
     }//GEN-LAST:event_rackButton147ActionPerformed
 
+    private void challengeButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_challengeButton2ActionPerformed
+        // TODO add your handling code here:
+        comuni.IniciarPartida();
+        challengeButton2.setEnabled(false); //ya no se puede volver a presionar 
+    }//GEN-LAST:event_challengeButton2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton EndTurn;
-    private javax.swing.JButton challengeButton;
+    public javax.swing.JButton EndTurn;
+    public javax.swing.JLabel LabelNumeroMaquina;
+    public javax.swing.JButton challengeButton;
     private javax.swing.JButton challengeButton1;
+    public javax.swing.JButton challengeButton2;
     public javax.swing.JPanel controlPanel;
     private javax.swing.JLabel instructionLabel;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -4219,7 +4227,6 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
     public javax.swing.JButton rackButton97;
     public javax.swing.JButton rackButton98;
     public javax.swing.JButton rackButton99;
-    private javax.swing.JButton startNewGameButton;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -29,7 +29,6 @@ public class Movimiento {
     }
     
     public void PonerFichas (JButton[] botonesPrincipales , Teclas aleatorio){
-
         for (int i=0; i<19; i++){
             if("".equals(botonesPrincipales[i].getText())){
                 botonesPrincipales[i].setText(aleatorio.numero);
@@ -55,7 +54,8 @@ public class Movimiento {
                     botonesPrincipales[i].setBackground(Color.black);  
                      ImageIcon img = new ImageIcon("src//imagenes/Blk"+aleatorio.numero+".png");               
                     botonesPrincipales[i].setIcon(new ImageIcon(img.getImage().getScaledInstance(62, -1, Image.SCALE_DEFAULT)));                
-                }  
+                }
+                
                 break;
             }
             
