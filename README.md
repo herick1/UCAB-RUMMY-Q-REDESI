@@ -14,4 +14,4 @@
 * Herick Navarro
 * Diorfelis Medina
 * Rafael Jimenez
-* Luis
+* Luis Salgado
