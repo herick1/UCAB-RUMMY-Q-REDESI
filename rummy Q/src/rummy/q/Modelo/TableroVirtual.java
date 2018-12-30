@@ -113,14 +113,15 @@ public class TableroVirtual {
             int ningunCambio=0;
             for(int i=0; i<8; i++){
                 for(int j=0; j<16; j++){
-                    aplicacion_actual.comuni.nuevaFichaTablero(teclasJugo[i][j], i, j);
-                     ningunCambio++; 
-
-                            
-                    
+                    if(teclasJugo[i][j].getBackground() == Tablero_antes_de_jugarMesa[i][j].getBackground() && teclasJugo[i][j].getText().equals(Tablero_antes_de_jugarMesa[i][j].getText()) ){
+                    }else{   
+                        aplicacion_actual.comuni.nuevaFichaTablero(teclasJugo[i][j], i, j);
+                        ningunCambio++;
+                    }                    
                 }
             }
             if(ningunCambio==0){
+                volverAlaPosicionInicial(aplicacion_actual);
                 PonerFichaEnMano(aplicacion_actual.comuni);
             }
             System.out.println(ningunCambio);            
@@ -135,6 +136,9 @@ public class TableroVirtual {
        }
         enableComponents(false);
         aplicacion_actual.comuni.TerminarTurno();
+        if(verSiSeTerminoLaPArtida()){
+            aplicacion_actual.comuni.FinPartida();
+        }
    }
    
     public boolean seCumplieronLasNormas ( Teclas[][] teclasJugo){       
@@ -440,7 +444,6 @@ public class TableroVirtual {
                                    auxRebizado.setText(auxRebizado.numero);
                                    auxRebizado.setBackground(colorFormatoColor(auxRebizado.color));
                                    
-                                   System.out.println("estoy aqui ? ");
                                    //vamos a recorrer el vector correcto es decir el vector con la linea
                                    //que se esta analizando y comparar con el aux que es la nueva ficha incorparada
                                    //obviamente si la ficha que estaba en el vector es un comodin el aux no se eberia comparar con
@@ -451,7 +454,6 @@ public class TableroVirtual {
                                        switch(sindecicion){
                                            case 1:
                                                
-                                               System.out.println("estoy aqui ? 00000 ");
                                                //esto quiere decir que hay dos comodines antes y que este cuarta ficha debe hacer 
                                                //un conjunto o una escalera
                                                
@@ -460,7 +462,6 @@ public class TableroVirtual {
                                                    //preguntamos que esta siguiente no sea del 
                                                    //mismo color al otro
                                                    
-                                                   System.out.println("soy conjunto valida:"+PoscionFichaValida );
                                                    
                                                    if(aux.getBackground() != auxRebizado.getBackground()){
                                                        correcto++;
@@ -491,7 +492,6 @@ public class TableroVirtual {
                                                            int numEnteroSiguiente = Integer.parseInt(numeroSiguiente);                                  
                                                            //se compara qe ademas de ser el mismo color debe ser uno consectivo en numero
                                                            
-                                                           System.out.println("soy escalera valida: "+PoscionFichaValida );
                                                            if(numEntero + (posicionesCoreect-PoscionFichaValida) == numEnteroSiguiente){
                                                                correcto++;
                                                                vector_correct[posicionesCoreect].numero=aux.getText();
@@ -518,7 +518,6 @@ public class TableroVirtual {
                                             //en las 3 primeras posiciones
                                            case 0:
                                                
-                                   System.out.println("estoy aqui 14? ");
                                                //si estamos aqui es porque ya hay un patron de que si es conjunto
                                                //o es una escalera, por eso el siguiente switch
                                                switch(tipo){
@@ -608,7 +607,22 @@ public class TableroVirtual {
      return true;
     }
 
-  
+   public void PartidaTerminada(String ganador){
+       vistaDeUsuario.MAquinaGanadora= ganador;
+        vistaDeUsuario.cerrarJuego();
+   }
+   public boolean verSiSeTerminoLaPArtida(){
+       int piezaValida=0;
+            for(int i=0; i<19; i++){
+                if( Tablero_antes_de_jugarJugador[i].getText() != null && "".equals(Tablero_antes_de_jugarJugador[i].getText())){
+                    piezaValida++;   
+                    return false;
+                }
+            }
+            return true;
+   }
+           
+    
     public void PonerEnLaMatrizTecla (Teclas teclaAponer , int x , int y ){
         
        JButton teclasSeleccionada = BuscarBotonSeleccionado(x,y);

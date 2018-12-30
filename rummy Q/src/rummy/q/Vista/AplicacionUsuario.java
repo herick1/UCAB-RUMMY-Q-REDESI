@@ -12,6 +12,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import rummy.q.Modelo.Movimiento;
 import rummy.q.Modelo.TableroVirtual;
@@ -71,7 +72,8 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
        botonesPrincipales[17] = rackButton18;
        botonesPrincipales[18] = rackButton19;  
     }
-
+    
+    
     public void ArrayBotonesPrincipalesInverso(){
        rackButton1 =botonesPrincipales[0] ;
        rackButton2 = botonesPrincipales[1] ;
@@ -93,8 +95,16 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
        rackButton18 = botonesPrincipales[17] ;
        rackButton19 = botonesPrincipales[18] ;  
     }
-   
-    
+
+    public String MAquinaGanadora= new String();  
+    public void cerrarJuego(){
+       int x = JOptionPane.showConfirmDialog(this, "ganador la maquina"+MAquinaGanadora);
+
+        if (JOptionPane.OK_OPTION == x) {
+            System.exit(0);
+        }
+        System.exit(0);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -2705,6 +2715,7 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void rackButton20MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rackButton20MousePressed
         // TODO add your handling code here:
        miMovimiento.BotonPresionado(evt,rackButton20);
@@ -4059,6 +4070,7 @@ public class AplicacionUsuario extends javax.swing.JFrame implements Cloneable {
         challengeButton2.setEnabled(false); //ya no se puede volver a presionar 
     }//GEN-LAST:event_challengeButton2ActionPerformed
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton EndTurn;
     public javax.swing.JLabel LabelNumeroMaquina;

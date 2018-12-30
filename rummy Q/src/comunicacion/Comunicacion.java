@@ -116,6 +116,7 @@ public class Comunicacion implements Runnable{
                 +" "+pasarByteAString(envio[1])
                 +" "+pasarByteAString(envio[2])
                 +" "+pasarByteAString(envio[3])
+                +" "+pasarByteAString(envio[4])
                 +"\n");
         puertoSalida.writeBytes(envio, envio.length);
     }
@@ -474,6 +475,10 @@ public class Comunicacion implements Runnable{
                           System.out.println("Se cumplió el ciclo");
                     }
                    break;
+                   
+                case "111":
+                           MiTablero.PartidaTerminada(origen);
+                break;
                 default: break;                   
             }
 
