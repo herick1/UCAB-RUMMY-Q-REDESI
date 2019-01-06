@@ -611,6 +611,7 @@ public class TableroVirtual {
        vistaDeUsuario.MAquinaGanadora= ganador;
         vistaDeUsuario.cerrarJuego();
    }
+   
    public boolean verSiSeTerminoLaPArtida(){
        int piezaValida=0;
             for(int i=0; i<19; i++){
@@ -622,7 +623,6 @@ public class TableroVirtual {
             return true;
    }
            
-    
     public void PonerEnLaMatrizTecla (Teclas teclaAponer , int x , int y ){
         
        JButton teclasSeleccionada = BuscarBotonSeleccionado(x,y);
@@ -692,8 +692,7 @@ public class TableroVirtual {
         Tablero_antes_de_jugarMesa= PasarBotonesAMatrizJuegoMesa(aplicacion_actual);
         Tablero_antes_de_jugarJugador= PasarBotonesAMatrizJuegoJugador(aplicacion_actual);       
     }
-    
-   
+      
    public Teclas[][] PasarBotonesAMatrizJuegoMesa (AplicacionUsuario aplicacion_actual){
              
        Teclas teclasMesa[][] = new Teclas[8][16];       
@@ -852,8 +851,7 @@ public class TableroVirtual {
      
        return teclasMesa;
    }
-   
-    
+       
    public Teclas[] PasarBotonesAMatrizJuegoJugador (AplicacionUsuario aplicacion_actual){
         Teclas teclasJugador[] = new Teclas[20]; 
         for(int i=0; i<20; i++)
@@ -882,7 +880,6 @@ public class TableroVirtual {
    }
     
    public void volverAlaPosicionInicial(AplicacionUsuario aplicacion_actual){
-
     //fila1
     PasarTeclaABoton(aplicacion_actual.rackButton20,Tablero_antes_de_jugarMesa[0][0]);
     PasarTeclaABoton(aplicacion_actual.rackButton21,Tablero_antes_de_jugarMesa[0][1]);
@@ -1049,8 +1046,7 @@ public class TableroVirtual {
     PasarTeclaABoton(aplicacion_actual.rackButton18,Tablero_antes_de_jugarJugador[17]);
     PasarTeclaABoton(aplicacion_actual.rackButton19,Tablero_antes_de_jugarJugador[18]); 
    }
-   
-   
+     
    public void PasarTeclaABoton(JButton boton , Teclas teclaSeleccionada){           
         boton.setText(teclaSeleccionada.getText());
         boton.setBackground(teclaSeleccionada.getBackground());    
@@ -1073,7 +1069,7 @@ public class TableroVirtual {
         vistaDeUsuario.LabelNumeroMaquina.setText(Estacion);
    }
            
-    public void intruccionAgarrarFichasIniciales(Comunicacion Comunica){
+   public void intruccionAgarrarFichasIniciales(Comunicacion Comunica){
 
         for(int i=0;i<14; i++){
             vistaDeUsuario.ArrayBotonesPrincipales();
@@ -1085,11 +1081,12 @@ public class TableroVirtual {
             }
         }
     }  
-    public void ActivarBotonDE14Fichas(){
+   
+   public void ActivarBotonDE14Fichas(){
         vistaDeUsuario.challengeButton.setEnabled(true);
     }
     
-    public void QuitarFicha(Teclas TeclaSeleccionada){
+   public void QuitarFicha(Teclas TeclaSeleccionada){
         int salida=0;
         for(int i=0; i!=k ;i++){
                
@@ -1102,7 +1099,7 @@ public class TableroVirtual {
         FichasRestantes[salida] = null;
     }
     
-    public JButton BuscarBotonSeleccionado(int i, int j){
+   public JButton BuscarBotonSeleccionado(int i, int j){
              //llenado de la matriz de todos los botones
      if ( i== 0  && j==  0) return vistaDeUsuario.rackButton20;
      if ( i== 0  && j==  1) return vistaDeUsuario.rackButton21;
@@ -1252,9 +1249,8 @@ public class TableroVirtual {
      vistaDeUsuario.rackButton147.setDisabledIcon(vistaDeUsuario.rackButton147.getIcon());
         return null;
     }
-    
-    
-    public void enableComponents(boolean enable) {
+        
+   public void enableComponents(boolean enable) {
       //fila 1 
       vistaDeUsuario.rackButton20.setDisabledIcon(vistaDeUsuario.rackButton20.getIcon());
       vistaDeUsuario.rackButton21.setDisabledIcon(vistaDeUsuario.rackButton21.getIcon());

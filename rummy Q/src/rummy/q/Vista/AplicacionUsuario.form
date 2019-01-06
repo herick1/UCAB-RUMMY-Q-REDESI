@@ -28,9 +28,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jPanel1" min="-2" pref="780" max="-2" attributes="0"/>
-                  <Component id="controlPanel" min="-2" pref="775" max="-2" attributes="0"/>
+                  <Component id="controlPanel" pref="780" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
           </Group>
@@ -41,7 +41,8 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="controlPanel" min="-2" pref="202" max="-2" attributes="0"/>
+              <Component id="controlPanel" min="-2" pref="178" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -69,193 +70,151 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <Component id="rackButton11" min="-2" pref="43" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="rackButton12" min="-2" pref="43" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="rackButton3" min="-2" pref="43" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="rackButton4" min="-2" pref="43" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="rackButton5" min="-2" pref="43" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="rackButton13" min="-2" pref="43" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="EndTurn" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="rackButton14" min="-2" pref="43" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="rackButton15" min="-2" pref="43" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="rackButton6" alignment="0" min="-2" pref="43" max="-2" attributes="0"/>
-                      <Component id="rackButton16" alignment="0" min="-2" pref="43" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="player4Score1" min="-2" pref="24" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="rackButton7" min="-2" pref="43" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="rackButton8" min="-2" pref="43" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="rackButton9" min="-2" pref="43" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="rackButton10" min="-2" pref="43" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jComboBox1" pref="283" max="32767" attributes="0"/>
-                                  <Component id="jComboBox2" max="32767" attributes="0"/>
-                              </Group>
-                              <Component id="challengeButton1" alignment="1" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="rackButton17" min="-2" pref="43" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="rackButton18" min="-2" pref="43" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="rackButton19" min="-2" pref="43" max="-2" attributes="0"/>
+                          <Component id="challengeButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="challengeButton2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <Component id="rackButton1" min="-2" pref="43" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="rackButton2" min="-2" pref="43" max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="EndTurn" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="74" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="player1Label" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="player2Label" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="player2Score" alignment="0" min="-2" pref="20" max="-2" attributes="0"/>
-                      <Component id="player1Score" alignment="0" max="32767" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="player3ScoreLabel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="player3Score1" min="-2" pref="24" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="player3ScoreLabel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="player4Score" min="-2" pref="24" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="player3ScoreLabel2" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace pref="78" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
                           <Component id="instructionLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="LabelNumeroMaquina" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="challengeButton" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="rackButton11" min="-2" pref="43" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="rackButton12" min="-2" pref="43" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="rackButton3" min="-2" pref="43" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="rackButton4" min="-2" pref="43" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="rackButton5" min="-2" pref="43" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="rackButton13" min="-2" pref="43" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="rackButton14" min="-2" pref="43" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="rackButton15" min="-2" pref="43" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="rackButton6" alignment="0" min="-2" pref="43" max="-2" attributes="0"/>
+                                      <Component id="rackButton16" alignment="0" min="-2" pref="43" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="rackButton7" min="-2" pref="43" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="rackButton8" min="-2" pref="43" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="rackButton9" min="-2" pref="43" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="rackButton10" min="-2" pref="43" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="rackButton17" min="-2" pref="43" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="rackButton18" min="-2" pref="43" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="rackButton19" min="-2" pref="43" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="rackButton1" min="-2" pref="43" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="rackButton2" min="-2" pref="43" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jComboBox1" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="challengeButton2" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                                  <Component id="challengeButton1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="jComboBox2" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="player1Label" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="player1Score" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="player3ScoreLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="player3Score1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="instructionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="LabelNumeroMaquina" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="challengeButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="EndTurn" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace pref="11" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                          <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jComboBox2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="player2Label" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="player2Score" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="player3ScoreLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="player4Score" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="player3ScoreLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="challengeButton2" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                              <Component id="challengeButton1" alignment="3" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="challengeButton" min="-2" max="-2" attributes="0"/>
-                              <Component id="EndTurn" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="rackButton1" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton2" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton3" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="rackButton11" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton13" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton12" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="rackButton4" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton5" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton6" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton7" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton8" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton10" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton9" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                  <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="jComboBox2" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="rackButton1" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton2" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton3" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="rackButton11" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton13" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton12" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="rackButton4" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton5" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton6" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton7" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton8" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton10" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton9" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="rackButton15" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton16" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton17" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton18" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton19" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                      <Component id="rackButton14" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="rackButton15" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton16" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton17" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton18" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton19" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Component id="rackButton14" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                  <Component id="challengeButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="challengeButton2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
+                          <EmptySpace min="0" pref="4" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="player4Score1" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -280,26 +239,6 @@
             <Property name="text" type="java.lang.String" value="MAQUINA NUMERO :"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="player1Label">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Jugador 1 Fichas:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="player1Score">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="0"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="player2Label">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Jugador 2 Fichas::"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="player2Score">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="0"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JButton" name="challengeButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Agarrar Ficha(14 primeras)"/>
@@ -311,26 +250,6 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
-        </Component>
-        <Component class="javax.swing.JLabel" name="player3ScoreLabel">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Jugador 3 Fichas:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="player3ScoreLabel1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Jugador 4 Fichas:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="player3Score1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="0"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="player4Score">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="0"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="rackButton1">
           <Properties>
@@ -516,16 +435,6 @@
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JLabel" name="player3ScoreLabel2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Fichas que Faltan "/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="player4Score1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="0"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JButton" name="rackButton15">
           <Properties>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -656,6 +565,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="challengeButton2">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="8" style="0"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Empezar Partida SOLO la maquina 00"/>
           </Properties>
           <Events>
